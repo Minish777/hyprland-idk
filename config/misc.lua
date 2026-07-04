@@ -35,4 +35,8 @@ hl.config({
         no_update_news = true,
         no_donation_nag = true,
     },
+
+    cursor = {
+    	no_hardware_cursors = true
+    },
 })
