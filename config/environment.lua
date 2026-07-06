@@ -22,5 +22,5 @@ hl.env("XDG_SESSION_DESKTOP", "Hyprland")
 -- Заставляем тулкиты и игры понимать Wayland
 hl.env("GDK_BACKEND", "wayland,x11,*")
 hl.env("QT_QPA_PLATFORM", "wayland;xcb")
-hl.env("SDL_VIDEODRIVER", "wayland")
 hl.env("CLUTTER_BACKEND", "wayland")
+hl.env("__GL_SYNC_TO_VBLANK", "0")
