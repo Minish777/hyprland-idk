@@ -27,9 +27,8 @@ order = [ "default" ]
     center = [ "clock" ]
     contact_shadow = false
     enabled = true
-    end = [ "tray", "notifications", "clipboard", "network", "volume", "session" ]
+    end = [ "tray", "notifications", "network", "volume", "session" ]
     font_weight = 500
-    hover_highlight = true
     layer = "top"
     margin_edge = 10
     margin_ends = 180
@@ -72,12 +71,9 @@ refresh_minutes = 15
 
 [control_center]
 hidden_tabs = [ "screen-time" ]
-sidebar = "compact"
-sidebar_section = "compact"
+sidebar = "full"
+sidebar_section = "full"
 width = 700
-
-    [control_center.calendar]
-    show_events_card = true
 
     [[control_center.shortcuts]]
     type = "wifi"
@@ -129,7 +125,6 @@ active_opacity = 1.0
 active_scale = 1.0
 auto_hide = false
 background_opacity = 0.87999999523162842
-concave_edge_corners = false
 cross_axis_padding = 8
 enabled = false
 icon_size = 48
@@ -324,9 +319,9 @@ enabled = [ "noctalia/wallhaven", "noctalia/bongocat" ]
     name = "community"
 
 [shell]
-app_icon_color = "shadow"
-app_icon_colorize = false
-avatar_path = "/run/media/stelum/data/downloads/6397414dde34c0d8a309bd7215400490.jpg"
+app_icon_color = "primary"
+app_icon_colorize = true
+avatar_path = "/media/Data/downloads/6397414dde34c0d8a309bd7215400490.jpg"
 clipboard_auto_paste = "auto"
 clipboard_confirm_clear_history = true
 clipboard_enabled = true
@@ -335,8 +330,7 @@ clipboard_image_action_command = ""
 corner_radius_scale = 1.0
 date_format = "%A, %x"
 disable_mipmaps = false
-external_ip_enabled = false
-font_family = "Montserrat Medium"
+font_family = "Varela Round"
 launch_apps_as_systemd_services = false
 launch_apps_custom_command = ""
 middle_click_opens_widget_settings = true
@@ -377,7 +371,7 @@ ui_scale = 1.0
     borders = true
     clipboard_placement = "floating"
     clipboard_position = "center"
-    control_center_placement = "floating"
+    control_center_placement = "attached"
     control_center_position = "auto"
     floating_offset = 8
     launcher_placement = "floating"
@@ -399,7 +393,6 @@ ui_scale = 1.0
     [shell.privacy]
     cam_filter_regex = ""
     mic_filter_regex = ""
-    screen_filter_regex = ""
 
     [shell.screen_corners]
     enabled = false
@@ -510,7 +503,7 @@ wallpaper_scheme = "m3-tonal-spot"
 
     [theme.templates]
     builtin_ids = [ "btop", "cava", "foot", "gtk3", "gtk4", "hyprland", "kcolorscheme", "qt", "starship" ]
-    community_ids = [ "pywalfox", "zed", "discord", "yazi", "hyprtoolkit" ]
+    community_ids = [ "pywalfox", "zen-browser", "neovim", "zed", "discord", "yazi", "hyprtoolkit" ]
     enable_builtin_templates = true
     enable_community_templates = true
 
@@ -576,10 +569,15 @@ type = "lock_keys"
 
 [widget.media]
 art_size = 16.0
+hide_when_no_media = true
 max_length = 220.0
 min_length = 80.0
 title_scroll = "none"
 type = "media"
+
+[widget.network]
+show_label = false
+type = "network"
 
 [widget.network_rx]
 stat = "net_rx"
@@ -588,6 +586,10 @@ type = "sysmon"
 [widget.network_tx]
 stat = "net_tx"
 type = "sysmon"
+
+[widget.notifications]
+hide_when_no_unread = true
+type = "notifications"
 
 [widget.output_volume]
 device = "output"
@@ -604,5 +606,15 @@ type = "spacer"
 stat = "cpu_temp"
 type = "sysmon"
 
+[widget.tray]
+drawer = true
+drawer_columns = 4
+type = "tray"
+
 [widget.wallhaven]
 type = "noctalia/wallhaven:wallhaven"
+
+[widget.workspaces]
+capsule_radius = 8
+display = "none"
+type = "workspaces"
