@@ -35,10 +35,9 @@ if status is-interactive
     end
 
     # Быстрый DNF5
-    alias dnf="sudo dnf"
-    alias dinstall="sudo dnf install"
-    alias uninstall="sudo dnf remove"
-    alias update="sudo dnf upgrade"
+    alias pinstall="sudo pacman -S"
+    alias uninstall="sudo pacman -Rns"
+    alias update="sudo pacman -Syu"
 
     # Системные утилиты
     alias grep="grep --color=auto"
@@ -50,3 +49,7 @@ if status is-interactive
     alias reload="source ~/.config/fish/config.fish"
 
 end
+
+# быстрые команды для управления zapret
+alias zapret-config='$HOME/zapret-configs/install.sh'
+alias zapret-utils='$HOME/zapret-configs/utils-zapret.sh'
