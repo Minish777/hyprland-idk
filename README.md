@@ -5,3 +5,6 @@
 
 highly recommed use cachy os, for better experience
 
+# install
+```bash
+paru -S --needed --noconfirm hyprland foot fish starship fastfetch hyprpicker noctalia git
