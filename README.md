@@ -7,4 +7,8 @@ highly recommed use cachy os, for better experience
 
 # install
 ```bash
-paru -S --needed --noconfirm hyprland foot fish starship fastfetch hyprpicker noctalia git
+paru -S --needed --noconfirm noctalia-git
+```
+
+```bash
+sudo pacman -S --needed --noconfirm hyprland foot fish starship fastfetch hyprpicker git
