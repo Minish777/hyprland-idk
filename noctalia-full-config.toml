@@ -52,7 +52,7 @@ order = [ "default" ]
     shadow = false
     show_on_workspace_switch = true
     smart_auto_hide = false
-    start = [ "workspaces", "media", "wallpaper", "mpvpaper" ]
+    start = [ "workspaces", "media", "wallpaper" ]
     thickness = 32
     widget_spacing = 6
 
@@ -125,6 +125,9 @@ widget_order = [ "desktop-widget-0000000000000001" ]
 
         [desktop_widgets.widget.desktop-widget-0000000000000001.settings]
         background = true
+        background_opacity = 0.25
+        background_padding = 1
+        background_radius = 15
         bands = 12
         centered = false
         show_when_idle = false
@@ -251,44 +254,77 @@ sunset = ""
 
 [lockscreen]
 allow_empty_password = false
-blur_intensity = 0.5
+blur_intensity = 0.25
 blurred_desktop = false
 enabled = true
-fingerprint = true
+fingerprint = false
 monitors = []
 tint_intensity = 0.30000001192092896
 wallpaper = ""
 
 [lockscreen_widgets]
-enabled = false
+enabled = true
 schema_version = 2
-widget_order = [ "lockscreen-login-box@HDMI-A-1" ]
+widget_order = [ "lockscreen-login-box@HDMI-A-1", "lockscreen-widget-0000000000000001", "lockscreen-widget-0000000000000003" ]
 
     [lockscreen_widgets.grid]
     cell_size = 16
     major_interval = 4
-    visible = true
+    visible = false
 
     [lockscreen_widgets.widget."lockscreen-login-box@HDMI-A-1"]
     box_height = 70.0
     box_width = 400.0
     cx = 960.0
-    cy = 961.0
+    cy = 655.0
     enabled = true
     output = "HDMI-A-1"
     rotation = 0.0
     type = "login_box"
 
         [lockscreen_widgets.widget."lockscreen-login-box@HDMI-A-1".settings]
-        background_color = "surface_variant"
-        background_opacity = 0.88
-        background_radius = 12.0
-        input_opacity = 1.0
-        input_radius = 6.0
+        background_color = "surface"
+        background_opacity = 0.75
+        background_radius = 25.0
+        center_password_text = true
+        input_opacity = 0.75
+        input_radius = 19.0
         show_caps_lock = true
         show_keyboard_layout = true
         show_login_button = true
         show_password_hint = true
+
+    [lockscreen_widgets.widget.lockscreen-widget-0000000000000001]
+    box_height = 192.0
+    box_width = 432.0
+    cx = 960.0
+    cy = 230.0
+    enabled = true
+    output = "HDMI-A-1"
+    rotation = 0.0
+    type = "clock"
+
+        [lockscreen_widgets.widget.lockscreen-widget-0000000000000001.settings]
+        background = false
+        center_text = true
+        clock_style = "digital"
+        shadow = false
+
+    [lockscreen_widgets.widget.lockscreen-widget-0000000000000003]
+    box_height = 152.0
+    box_width = 389.0
+    cx = 960.0
+    cy = 903.0
+    enabled = true
+    output = "HDMI-A-1"
+    rotation = -0.0
+    type = "media_player"
+
+        [lockscreen_widgets.widget.lockscreen-widget-0000000000000003.settings]
+        background = false
+        hide_when_no_media = true
+        layout = "horizontal"
+        shadow = false
 
 [nightlight]
 enabled = false
@@ -377,7 +413,7 @@ middle_click_opens_widget_settings = true
 niri_overview_type_to_launch_enabled = false
 offline_mode = false
 password_style = "default"
-polkit_agent = false
+polkit_agent = true
 screen_time_enabled = false
 settings_show_advanced = true
 setup_wizard_enabled = true
@@ -619,9 +655,6 @@ max_length = 220.0
 min_length = 80.0
 title_scroll = "none"
 type = "media"
-
-[widget.mpvpaper]
-type = "noctalia/mpvpaper:mpvpaper"
 
 [widget.network]
 show_label = false
