@@ -34,15 +34,16 @@ hl.config({
         -- Настройки v5 для корректной отрисовки шелла
         rounding_power = 2, 
         
-        active_opacity = 1.0,
+        active_opacity = 0.95,
         inactive_opacity = 1.0,
         fullscreen_opacity = 1,
         
         blur = {
             enabled = true,
-            size = 5,
-            passes = 2, -- Оптимально для GTX 1050
+            size = 6,
+            passes = 3, -- Оптимально для GTX 1050
             new_optimizations = true,
+            ignore_opacity = true,
             xray = true,
             vibrancy = 0.1696, -- Рекомендуемое значение для v5
         },

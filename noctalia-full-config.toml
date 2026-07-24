@@ -74,6 +74,8 @@ sync_all_monitors = false
 
 [calendar]
 enabled = false
+event_date_format = "%A %e %B"
+event_time_format = "%H:%M"
 refresh_minutes = 15
 
 [control_center]
@@ -192,6 +194,7 @@ wifi_disabled = []
 wifi_enabled = []
 
 [hot_corners]
+delay_ms = 0
 enabled = false
 
     [hot_corners.bottom_left]
@@ -265,40 +268,40 @@ wallpaper = ""
 [lockscreen_widgets]
 enabled = true
 schema_version = 2
-widget_order = [ "lockscreen-login-box@HDMI-A-1", "lockscreen-widget-0000000000000001", "lockscreen-widget-0000000000000003" ]
+widget_order = [ "lockscreen-login-box@HDMI-A-1", "lockscreen-widget-0000000000000001", "lockscreen-widget-0000000000000002" ]
 
     [lockscreen_widgets.grid]
     cell_size = 16
     major_interval = 4
-    visible = false
+    visible = true
 
     [lockscreen_widgets.widget."lockscreen-login-box@HDMI-A-1"]
     box_height = 70.0
     box_width = 400.0
     cx = 960.0
-    cy = 655.0
+    cy = 607.0
     enabled = true
     output = "HDMI-A-1"
     rotation = 0.0
     type = "login_box"
 
         [lockscreen_widgets.widget."lockscreen-login-box@HDMI-A-1".settings]
-        background_color = "surface"
-        background_opacity = 0.75
+        background_color = "surface_variant"
+        background_opacity = 0.70000000000000007
         background_radius = 25.0
         center_password_text = true
         input_opacity = 0.75
-        input_radius = 19.0
+        input_radius = 32.0
         show_caps_lock = true
         show_keyboard_layout = true
         show_login_button = true
         show_password_hint = true
 
     [lockscreen_widgets.widget.lockscreen-widget-0000000000000001]
-    box_height = 192.0
-    box_width = 432.0
+    box_height = 240.0
+    box_width = 400.0
     cx = 960.0
-    cy = 230.0
+    cy = 244.0
     enabled = true
     output = "HDMI-A-1"
     rotation = 0.0
@@ -306,24 +309,26 @@ widget_order = [ "lockscreen-login-box@HDMI-A-1", "lockscreen-widget-00000000000
 
         [lockscreen_widgets.widget.lockscreen-widget-0000000000000001.settings]
         background = false
+        background_opacity = 0.0
         center_text = true
         clock_style = "digital"
         shadow = false
 
-    [lockscreen_widgets.widget.lockscreen-widget-0000000000000003]
-    box_height = 152.0
-    box_width = 389.0
-    cx = 960.0
-    cy = 903.0
+    [lockscreen_widgets.widget.lockscreen-widget-0000000000000002]
+    box_height = 176.0
+    box_width = 384.0
+    cx = 1664.0
+    cy = 132.0
     enabled = true
     output = "HDMI-A-1"
-    rotation = -0.0
-    type = "media_player"
+    rotation = 0.0
+    type = "weather"
 
-        [lockscreen_widgets.widget.lockscreen-widget-0000000000000003.settings]
-        background = false
-        hide_when_no_media = true
-        layout = "horizontal"
+        [lockscreen_widgets.widget.lockscreen-widget-0000000000000002.settings]
+        background = true
+        background_opacity = 0.25
+        background_padding = 0
+        background_radius = 32
         shadow = false
 
 [nightlight]
@@ -349,6 +354,7 @@ show_app_name = true
 [osd]
 background_opacity = 0.97000002861022949
 border = true
+enabled = true
 monitors = []
 offset_x = 20
 offset_y = 8
@@ -362,6 +368,7 @@ scale = 1.0
     brightness = true
     caffeine = true
     dnd = true
+    keyboard_backlight = true
     keyboard_layout = true
     lock_keys = true
     media = true
@@ -378,7 +385,7 @@ video_directory = "/home/steelium/wallpapers"
 
 [plugins]
 auto_update = true
-enabled = [ "noctalia/wallhaven", "oldirtty/color_picker", "noctalia/mpvpaper", "whyoolw/sharednd" ]
+enabled = [ "noctalia/wallhaven", "oldirtty/color_picker", "whyoolw/sharednd" ]
 
     [[plugins.source]]
     enabled = true
@@ -407,6 +414,7 @@ date_format = "%A, %x"
 disable_mipmaps = false
 external_ip_enabled = false
 font_family = "Varela Round"
+input_borders = true
 launch_apps_as_systemd_services = false
 launch_apps_custom_command = ""
 middle_click_opens_widget_settings = true
@@ -414,6 +422,8 @@ niri_overview_type_to_launch_enabled = false
 offline_mode = false
 password_style = "default"
 polkit_agent = true
+popup_borders = true
+popup_shadows = true
 screen_time_enabled = false
 settings_show_advanced = true
 setup_wizard_enabled = true
@@ -431,8 +441,10 @@ time_format = "{:%H:%M}"
 
     [shell.launcher]
     app_grid = false
+    auto_paste = "auto"
     categories = true
     compact = false
+    fetch_exchange_rates = true
     provider_prefix = "/"
     show_icons = true
     sort_by_usage = true
@@ -451,6 +463,7 @@ time_format = "{:%H:%M}"
     floating_offset = 8
     launcher_placement = "floating"
     launcher_position = "center"
+    list_item_background = false
     open_near_click_clipboard = false
     open_near_click_control_center = true
     open_near_click_launcher = false
@@ -483,10 +496,12 @@ time_format = "{:%H:%M}"
     pipe_command = ""
     pipe_to_command = false
     save_to_file = false
+    show_cursor = false
 
     [shell.session]
     grid = false
     grid_columns = 3
+    show_shortcuts = true
 
         [shell.session.power]
 
@@ -544,6 +559,10 @@ time_format = "{:%H:%M}"
     alpha = 0.55000001192092896
     direction = "down"
 
+[storage]
+key_file = ""
+key_source = "secret-service"
+
 [system.monitor]
 cpu_poll_seconds = 2.0
 cpu_temp_activity_threshold = 60.0
@@ -551,9 +570,15 @@ cpu_temp_critical_threshold = 85.0
 cpu_temp_sensor_path = ""
 cpu_usage_activity_threshold = 50.0
 cpu_usage_critical_threshold = 90.0
-disk_pct_activity_threshold = 80.0
-disk_pct_critical_threshold = 95.0
+disk_free_activity_threshold = 80.0
+disk_free_critical_threshold = 95.0
+disk_free_pct_activity_threshold = 80.0
+disk_free_pct_critical_threshold = 95.0
 disk_poll_seconds = 10.0
+disk_used_activity_threshold = 80.0
+disk_used_critical_threshold = 95.0
+disk_used_pct_activity_threshold = 80.0
+disk_used_pct_critical_threshold = 95.0
 enabled = true
 gpu_poll_seconds = 0.0
 gpu_temp_activity_threshold = 60.0
@@ -584,7 +609,7 @@ wallpaper_scheme = "m3-tonal-spot"
 
     [theme.templates]
     builtin_ids = [ "btop", "cava", "foot", "gtk3", "gtk4", "hyprland", "kcolorscheme", "qt", "starship" ]
-    community_ids = [ "pywalfox", "zen-browser", "neovim", "zed", "discord", "yazi", "hyprtoolkit" ]
+    community_ids = [ "pywalfox", "zen-browser", "neovim", "zed", "discord", "obs", "prismlauncher", "yazi", "hyprtoolkit" ]
     enable_builtin_templates = true
     enable_community_templates = true
 
