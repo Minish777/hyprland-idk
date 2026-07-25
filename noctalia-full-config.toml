@@ -108,7 +108,7 @@ width = 700
 [desktop_widgets]
 enabled = true
 schema_version = 2
-widget_order = [ "desktop-widget-0000000000000001" ]
+widget_order = [ "desktop-widget-0000000000000001", "desktop-widget-0000000000000002" ]
 
     [desktop_widgets.grid]
     cell_size = 16
@@ -133,6 +133,22 @@ widget_order = [ "desktop-widget-0000000000000001" ]
         bands = 12
         centered = false
         show_when_idle = false
+
+    [desktop_widgets.widget.desktop-widget-0000000000000002]
+    box_height = 288.0
+    box_width = 352.0
+    cx = 1808.0
+    cy = 572.0
+    enabled = true
+    output = "HDMI-A-1"
+    rotation = 0.0
+    type = "media_player"
+
+        [desktop_widgets.widget.desktop-widget-0000000000000002.settings]
+        background = false
+        hide_when_no_media = false
+        layout = "vertical"
+        shadow = false
 
 [dock]
 active_monitor_only = false
@@ -605,11 +621,11 @@ custom_palette = ""
 mode = "dark"
 pure_black_dark = false
 source = "wallpaper"
-wallpaper_scheme = "m3-tonal-spot"
+wallpaper_scheme = "m3-rainbow"
 
     [theme.templates]
-    builtin_ids = [ "btop", "cava", "foot", "gtk3", "gtk4", "hyprland", "kcolorscheme", "qt", "starship" ]
-    community_ids = [ "pywalfox", "zen-browser", "neovim", "zed", "discord", "obs", "prismlauncher", "yazi", "hyprtoolkit" ]
+    builtin_ids = [ "btop", "cava", "foot", "gtk3", "gtk4", "helix", "hyprland", "kcolorscheme", "qt", "starship" ]
+    community_ids = [ "pywalfox", "zen-browser", "neovim", "zed", "bat", "discord", "obs", "prismlauncher", "yazi", "hyprtoolkit" ]
     enable_builtin_templates = true
     enable_community_templates = true
 
