@@ -32,18 +32,6 @@ truncate_to_repo = true
 symbol = " "
 format = "on $symbol$branch "
 
-# Статус Git (миниатюрные аккуратные индикаторы в круглых скобках)
-[git_status]
-format = "([$all_status$num_untracked] )"
-conflicted = "="
-ahead = "⇡"
-behind = "⇣"
-diverged = "⇕"
-untracked = "?"
-modified = "!"
-staged = "+"
-renamed = "»"
-deleted = "✘"
 
 # Окружение Rust (появится только в .rs проектах)
 [rust]
@@ -78,40 +66,40 @@ format = "took $duration "
 
 [palettes.noctalia]
 # Standard colors
-blue      = "#c5c3ea"
+blue      = "#a3d0c0"
 red       = "#ffb4ab"
-green     = "#89d0ee"
-yellow    = "#b4cad5"
-cyan      = "#b4cad5"
-magenta   = "#89d0ee"
-white     = "#dee3e6"
-black     = "#40484c"
+green     = "#c5ce5c"
+yellow    = "#c8c9a6"
+cyan      = "#c8c9a6"
+magenta   = "#c5ce5c"
+white     = "#e2e2e2"
+black     = "#474747"
 
 # Extended palette (Catppuccin-compatible names)
-rosewater = "#b4cad5"
+rosewater = "#c8c9a6"
 flamingo  = "#ffb4ab"
-pink      = "#89d0ee"
-mauve     = "#89d0ee"
+pink      = "#c5ce5c"
+mauve     = "#c5ce5c"
 maroon    = "#ffb4ab"
-peach     = "#b4cad5"
-teal      = "#b4cad5"
-sky       = "#b4cad5"
-sapphire  = "#c5c3ea"
-lavender  = "#89d0ee"
+peach     = "#c8c9a6"
+teal      = "#c8c9a6"
+sky       = "#c8c9a6"
+sapphire  = "#a3d0c0"
+lavender  = "#c5ce5c"
 
 # Text shades
-text      = "#dee3e6"
-subtext1  = "#dee3e6"
-subtext0  = "#8a9296"
+text      = "#e2e2e2"
+subtext1  = "#e2e2e2"
+subtext0  = "#919191"
 
 # Surface shades
-overlay2  = "#8a9296"
-overlay1  = "#8a9296"
-overlay0  = "#40484c"
-surface2  = "#40484c"
-surface1  = "#40484c"
-surface0  = "#0f1417"
-base      = "#0f1417"
-mantle    = "#0f1417"
-crust     = "#0f1417"
+overlay2  = "#919191"
+overlay1  = "#919191"
+overlay0  = "#474747"
+surface2  = "#474747"
+surface1  = "#474747"
+surface0  = "#131313"
+base      = "#131313"
+mantle    = "#131313"
+crust     = "#131313"
 # <<< NOCTALIA STARSHIP PALETTE <<<
