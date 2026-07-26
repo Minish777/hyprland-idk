@@ -19,7 +19,7 @@ order = [ "default" ]
 
     [bar.default]
     auto_hide = false
-    background_opacity = 0.75
+    background_opacity = 0.5
     border = "outline"
     border_width = 0.0
     capsule = false
@@ -32,19 +32,19 @@ order = [ "default" ]
     concave_edge_corners = true
     contact_shadow = false
     enabled = true
-    end = [ "tray", "ram", "widget", "notifications", "network", "volume", "session" ]
+    end = [ "tray", "ram", "widget", "notifications", "volume", "session" ]
     font_weight = 500
     hover_highlight = true
     layer = "top"
     margin_edge = 10
-    margin_ends = 180
+    margin_ends = 140
     margin_opposite_edge = 0
     padding = 14
     panel_overlap = 1
     position = "top"
     radius = 12
     radius_bottom_left = 12
-    radius_bottom_right = 12
+    radius_bottom_right = 0
     radius_top_left = 12
     radius_top_right = 12
     reserve_space = true
@@ -57,11 +57,6 @@ order = [ "default" ]
     widget_spacing = 6
 
         [bar.default.dead_zone]
-        command = ""
-        middle_command = ""
-        right_command = ""
-        scroll_down_command = ""
-        scroll_up_command = ""
 
 [battery]
 warning_threshold = 10
@@ -74,8 +69,6 @@ sync_all_monitors = false
 
 [calendar]
 enabled = false
-event_date_format = "%A %e %B"
-event_time_format = "%H:%M"
 refresh_minutes = 15
 
 [control_center]
@@ -85,7 +78,10 @@ sidebar_section = "full"
 width = 700
 
     [control_center.calendar]
+    event_date_format = "%A %e %B"
+    event_time_format = "%H:%M"
     show_events_card = true
+    show_week_numbers = false
 
     [[control_center.shortcuts]]
     type = "wifi"
@@ -108,7 +104,7 @@ width = 700
 [desktop_widgets]
 enabled = true
 schema_version = 2
-widget_order = [ "desktop-widget-0000000000000001", "desktop-widget-0000000000000002" ]
+widget_order = [ "desktop-widget-0000000000000001", "desktop-widget-0000000000000002", "desktop-widget-0000000000000003" ]
 
     [desktop_widgets.grid]
     cell_size = 16
@@ -150,6 +146,22 @@ widget_order = [ "desktop-widget-0000000000000001", "desktop-widget-000000000000
         layout = "vertical"
         shadow = false
 
+    [desktop_widgets.widget.desktop-widget-0000000000000003]
+    box_height = 272.0
+    box_width = 144.0
+    cx = 1200.0
+    cy = 560.0
+    enabled = true
+    output = "Unknown-1"
+    rotation = 0.0
+    type = "media_player"
+
+        [desktop_widgets.widget.desktop-widget-0000000000000003.settings]
+        background = false
+        hide_when_no_media = true
+        layout = "vertical"
+        shadow = false
+
 [dock]
 active_monitor_only = false
 active_opacity = 1.0
@@ -169,6 +181,7 @@ launcher_custom_image = ""
 launcher_custom_image_colorize = false
 launcher_icon = "grid-dots"
 launcher_position = "none"
+layer = "top"
 magnification = true
 magnification_scale = 1.4500000476837158
 main_axis_padding = 16
@@ -284,7 +297,13 @@ wallpaper = ""
 [lockscreen_widgets]
 enabled = true
 schema_version = 2
-widget_order = [ "lockscreen-login-box@HDMI-A-1", "lockscreen-widget-0000000000000001", "lockscreen-widget-0000000000000002" ]
+widget_order = [
+    "lockscreen-login-box@Unknown-1",
+    "lockscreen-login-box@HDMI-A-1",
+    "lockscreen-widget-0000000000000001",
+    "lockscreen-widget-0000000000000002",
+    "lockscreen-widget-0000000000000003"
+]
 
     [lockscreen_widgets.grid]
     cell_size = 16
@@ -292,8 +311,8 @@ widget_order = [ "lockscreen-login-box@HDMI-A-1", "lockscreen-widget-00000000000
     visible = true
 
     [lockscreen_widgets.widget."lockscreen-login-box@HDMI-A-1"]
-    box_height = 70.0
-    box_width = 400.0
+    box_height = 201.0
+    box_width = 720.0
     cx = 960.0
     cy = 607.0
     enabled = true
@@ -308,10 +327,40 @@ widget_order = [ "lockscreen-login-box@HDMI-A-1", "lockscreen-widget-00000000000
         center_password_text = true
         input_opacity = 0.75
         input_radius = 32.0
+        layout = "regular"
         show_caps_lock = true
         show_keyboard_layout = true
         show_login_button = true
+        show_media = true
         show_password_hint = true
+        show_session_buttons = true
+        show_weather = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@Unknown-1"]
+    box_height = 87.0
+    box_width = 400.0
+    cx = 640.0
+    cy = 560.0
+    enabled = true
+    output = "Unknown-1"
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@Unknown-1".settings]
+        background_color = "surface_variant"
+        background_opacity = 0.5
+        background_radius = 32.0
+        center_password_text = true
+        input_opacity = 0.73999999999999999
+        input_radius = 32.0
+        layout = "compact"
+        show_caps_lock = true
+        show_keyboard_layout = true
+        show_login_button = true
+        show_media = true
+        show_password_hint = false
+        show_session_buttons = true
+        show_weather = true
 
     [lockscreen_widgets.widget.lockscreen-widget-0000000000000001]
     box_height = 240.0
@@ -345,6 +394,21 @@ widget_order = [ "lockscreen-login-box@HDMI-A-1", "lockscreen-widget-00000000000
         background_opacity = 0.25
         background_padding = 0
         background_radius = 32
+        shadow = false
+
+    [lockscreen_widgets.widget.lockscreen-widget-0000000000000003]
+    box_height = 160.0
+    box_width = 336.0
+    cx = 640.0
+    cy = 336.0
+    enabled = true
+    output = "Unknown-1"
+    rotation = 0.0
+    type = "clock"
+
+        [lockscreen_widgets.widget.lockscreen-widget-0000000000000003.settings]
+        background = false
+        center_text = true
         shadow = false
 
 [nightlight]
@@ -420,23 +484,25 @@ app_icon_color = "primary"
 app_icon_colorize = true
 avatar_path = "/media/Data/downloads/6397414dde34c0d8a309bd7215400490.jpg"
 button_borders = true
+card_borders = true
 clipboard_auto_paste = "auto"
 clipboard_confirm_clear_history = true
 clipboard_enabled = true
 clipboard_history_max_entries = 100
 clipboard_image_action_command = ""
+clipboard_keep_from_closed_apps = true
 corner_radius_scale = 1.0
 date_format = "%A, %x"
 disable_mipmaps = false
 external_ip_enabled = false
 font_family = "Varela Round"
 input_borders = true
+lang = "ru"
 launch_apps_as_systemd_services = false
 launch_apps_custom_command = ""
-middle_click_opens_widget_settings = true
 niri_overview_type_to_launch_enabled = false
 offline_mode = false
-password_style = "default"
+password_style = "random"
 polkit_agent = true
 popup_borders = true
 popup_shadows = true
@@ -630,7 +696,7 @@ wallpaper_scheme = "m3-rainbow"
     enable_community_templates = true
 
 [wallpaper]
-directory = "/home/steelium/wallpapers"
+directory = "/home/stelia/wallpapers"
 directory_dark = ""
 directory_light = ""
 edge_smoothness = 0.30000001192092896
@@ -677,7 +743,6 @@ device = "input"
 type = "volume"
 
 [widget.keyboard_layout]
-cycle_command = ""
 hide_when_single_layout = false
 type = "keyboard_layout"
 
@@ -722,6 +787,7 @@ stat = "ram_used"
 type = "sysmon"
 
 [widget.spacer]
+interactive = false
 type = "spacer"
 
 [widget.temp]
