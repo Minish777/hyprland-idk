@@ -484,13 +484,11 @@ app_icon_color = "primary"
 app_icon_colorize = true
 avatar_path = "/media/Data/downloads/6397414dde34c0d8a309bd7215400490.jpg"
 button_borders = true
-card_borders = true
 clipboard_auto_paste = "auto"
 clipboard_confirm_clear_history = true
 clipboard_enabled = true
 clipboard_history_max_entries = 100
 clipboard_image_action_command = ""
-clipboard_keep_from_closed_apps = true
 corner_radius_scale = 1.0
 date_format = "%A, %x"
 disable_mipmaps = false
@@ -696,7 +694,7 @@ wallpaper_scheme = "m3-rainbow"
     enable_community_templates = true
 
 [wallpaper]
-directory = "/home/stelia/wallpapers"
+directory = "/home/steelium/wallpapers"
 directory_dark = ""
 directory_light = ""
 edge_smoothness = 0.30000001192092896

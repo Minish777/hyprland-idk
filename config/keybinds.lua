@@ -29,7 +29,7 @@ hl.bind(mainMod .. " + SHIFT + Down",  hl.dsp.window.move({ direction = "d" }))
 ---- LAUNCHER ----
 ------------------
 
-hl.bind(mainMod .. " + Return",       hl.dsp.exec_cmd(TERMINAL))
+hl.bind(mainMod .. " + A",       hl.dsp.exec_cmd(TERMINAL))
 hl.bind(mainMod .. " + E",            hl.dsp.exec_cmd(FILE_MANAGER))
 hl.bind(mainMod .. " + R",            hl.dsp.exec_cmd(ipc .. "panel-toggle launcher")) -- Win+R Лаунчер v5
 hl.bind(mainMod .. " + W",            hl.dsp.exec_cmd(BROWSER))
