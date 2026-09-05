@@ -353,8 +353,8 @@ scale = 1.0
 video_directory = "/home/steelium/wallpapers"
 
 [plugins]
-auto_update = true
-enabled = [ "noctalia/wallhaven", "oldirtty/color_picker", "whyoolw/sharednd" ]
+auto_update = "all"
+enabled = [ "noctalia/wallhaven", "oldirtty/color_picker", "whyoolw/sharednd", "noctalia/bongocat", "noctalia/mpvpaper" ]
 
     [[plugins.source]]
     enabled = true
@@ -698,5 +698,5 @@ type = "oldirtty/color_picker:widget"
 
 [widget.workspaces]
 capsule_radius = 8
-display = "none"
+show_labels = false
 type = "workspaces"

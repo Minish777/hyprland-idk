@@ -45,6 +45,11 @@ if status is-interactive
     alias ...="cd ../.."
     alias c="clear"
 
+    # NixOS
+    alias nixr="cd /etc/nixos && sudo nixos-rebuild switch --flake /etc/nixos && cd -"
+    alias nixu="cd /etc/nixos && nix flake update && cd -"
+    alias nixc="sudo nix-collect-garbage -d && nix store optimise"
+
     # Быстрая перезагрузка конфигов "на лету"
     alias reload="source ~/.config/fish/config.fish"
 
@@ -53,3 +58,6 @@ end
 # быстрые команды для управления zapret
 alias zapret-config='$HOME/zapret-configs/install.sh'
 alias zapret-utils='$HOME/zapret-configs/utils-zapret.sh'
+
+# opencode
+fish_add_path /home/steelium/.opencode/bin

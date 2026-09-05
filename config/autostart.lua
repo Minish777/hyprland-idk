@@ -3,6 +3,7 @@
 
 hl.on("hyprland.start", function ()
     hl.exec_cmd("dbus-update-activation-environment --systemd --all")
+    hl.exec_cmd("systemctl --user start hyprland-session.target graphical-session.target")
     hl.exec_cmd("noctalia") -- Чистый запуск Noctalia v5 без quicshell/qs
     hl.exec_cmd("xhost +SI:localuser:root")
 end)

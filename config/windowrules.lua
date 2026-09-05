@@ -107,10 +107,13 @@ hl.window_rule({
 -- Opacity Overrides
 ---------------------------------------------------
 
-local terminals = "^(kitty|ghostty|[Kk]onsole|Alacritty|gnome-terminal|xfce[0-9]?-terminal)$"
+local terminals = "^(foot|com\\.mitchellh\\.ghostty)$"
+-- Приложения без блюра (для не-терминальных окон). Терминал остаётся размытым.
+local noBlurApps = "^(zen.*|firefox|chromium|google-chrome|steam|spotify|nautilus|code|org\\.kde\\.dolphin|davinci-resolve|Resolve|mpv|org\\.kde\\.haruna|.*vlc.*|org\\.kde\\.gwenview|libreoffice|thunderbird|throne|equibop|goofcord)$"
 
 hl.window_rule({ match = { class = "^(firefox|zen)$" }, opacity = "1.0 override" })
-hl.window_rule({ match = { class = terminals }, opacity = "1.0 override" })
+hl.window_rule({ match = { class = terminals }, opacity = "0.90 override" })
+-- hl.window_rule({ match = { class = noBlurApps }, no_blur = true }) -- диагностика блюра
 
 hl.window_rule({
     match = { class = "^(mpv|org.kde.haruna|.*plex.*|org\\.kde\\.gwenview|.*vlc.*)$" },
@@ -203,7 +206,8 @@ hl.layer_rule({
 ---------------------------------------------------
 
 hl.window_rule({
-    match = { fullscreen = true },
+    -- Терминал (ghostty/foot) исключён, чтобы блюр оставался при fullscreen
+    match = { fullscreen = true, class = "negative:^(foot|com\\.mitchellh\\.ghostty)$" },
     border_size = 0,
     no_shadow = true,
     no_blur = true

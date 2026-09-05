@@ -13,5 +13,6 @@ require("config.monitors")
 require("config.windowrules")
 
 
+
 -- For Noctalia Color templates
 require("noctalia").apply_theme()
