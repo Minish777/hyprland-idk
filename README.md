@@ -72,19 +72,26 @@ The script is **fully interactive** — just run it and follow the menus.
 
 | Key | Action |
 |-----|--------|
-| `Super + A` / `Super + R` | Launcher |
-| `Super + Space` | Terminal (foot) |
+| `Super + A` | Terminal (foot) |
 | `Super + E` | File manager (nautilus) |
+| `Super + R` | Launcher (Noctalia) |
 | `Super + W` | Browser (zen-browser) |
 | `Super + T` | Wallpaper selector |
-| `Super + V` | Clipboard history (cliphist) |
+| `Super + Space` | Toggle float + resize (900×600) + center |
 | `Super + S` | Control center |
+| `Super + Shift + S` | Screenshot region |
+| `Super + V` | Clipboard history (cliphist) |
 | `Super + L` | Lock screen |
 | `Super + Shift + R` | Restart Noctalia |
-| `Super + Shift + S` | Screenshot region |
 | `Print` | Full screenshot |
-| `Super + C` | Editor |
+| `Super + C` | Editor (gnome-text-editor) |
 | `Alt + Tab` | Window switcher |
+| `Super + mouse ↑/↓` | Prev/Next workspace |
+| `Super + PgUp/PgDn` | Prev/Next workspace |
+| `Ctrl + Super + ←/→` | Prev/Next workspace |
+| `Super + Alt + mouse ↑/↓` | Move window to prev/next workspace |
+| `Ctrl + Super + Shift + ←/→` | Move window to prev/next workspace |
+| `Super + Shift + ←/→/↑/↓` | Move window direction |
 
 ---
 
@@ -216,19 +223,26 @@ chmod +x install.sh
 
 | Клавиша | Действие |
 |---------|----------|
-| `Super + A` / `Super + R` | Лаунчер |
-| `Super + Space` | Терминал (foot) |
+| `Super + A` | Терминал (foot) |
 | `Super + E` | Файловый менеджер (nautilus) |
+| `Super + R` | Лаунчер (Noctalia) |
 | `Super + W` | Браузер (zen-browser) |
 | `Super + T` | Селектор обоев |
-| `Super + V` | Буфер обмена (cliphist) |
+| `Super + Space` | Toggle float + resize (900×600) + center |
 | `Super + S` | Центр управления |
+| `Super + Shift + S` | Скриншот области |
+| `Super + V` | Буфер обмена (cliphist) |
 | `Super + L` | Блокировка |
 | `Super + Shift + R` | Рестарт Noctalia |
-| `Super + Shift + S` | Скриншот области |
 | `Print` | Скриншот экрана |
-| `Super + C` | Редактор |
+| `Super + C` | Редактор (gnome-text-editor) |
 | `Alt + Tab` | Переключение окон |
+| `Super + mouse ↑/↓` | Предидущий/следующий workspace |
+| `Super + PgUp/PgDn` | Предидущий/следующий workspace |
+| `Ctrl + Super + ←/→` | Предидущий/следующий workspace |
+| `Super + Alt + mouse ↑/↓` | Переместить окно на prev/next workspace |
+| `Ctrl + Super + Shift + ←/→` | Переместить окно на prev/next workspace |
+| `Super + Shift + ←/→/↑/↓` | Переместить окно по направлению |
 
 ## Совет: маленький корневой раздел
 

@@ -349,9 +349,10 @@ summary() {
     echo
     echo -e "  ${YELLOW}Следующие шаги:${NC}"
     echo -e "  1. ${CYAN}_exit${NC} в Hyprland (или перезайди в сессию)"
-    echo -e "  2. ${CYAN}Super+R${NC} — лаунчер, ${CYAN}Super+Space${NC} — терминал (foot)"
+    echo -e "  2. ${CYAN}Super+A${NC} — терминал (foot), ${CYAN}Super+R${NC} — лаунчер"
     echo -e "  3. ${CYAN}Super+T${NC} — обои, ${CYAN}Super+V${NC} — буфер обмена"
     echo -e "  4. ${CYAN}Super+Shift+R${NC} — рестарт Noctalia"
+    echo -e "  5. ${CYAN}Super+Space${NC} — float окно, ${CYAN}Super+mouse↑/↓${NC} — workspace"
     echo
     echo -e "  ${BLUE}Полезные команды:${NC}"
     echo -e "  ${CYAN}hyprctl reload${NC}           — перезагрузка Hyprland"
