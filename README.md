@@ -1,107 +1,114 @@
 # hyprland-idk
 
-My Linux rice — Hyprland + Noctalia V5 (Arch/Arch-based)
+> **Hyprland + Noctalia V5 rice** for Arch/Arch-based distros
 
-<img width="1920" height="1080" alt="изображение" src="https://github.com/user-attachments/assets/ef1c5cf6-e124-4012-b367-ed41ceec3b89" />
+![Preview](https://github.com/user-attachments/assets/ef1c5cf6-e124-4012-b367-ed41ceec3b89)
 
-## Что внутри
+---
 
-| Что | Конфиг |
-|---|---|
+## Features
+
+| Component | Config |
+|-----------|--------|
 | Window Manager | Hyprland (Lua: `config/hypr/hyprland.lua`) |
-| Shell/Док/Бар | Noctalia V5 (`config/noctalia/config.toml`) |
-| Терминал | Foot |
+| Shell / Bar / Dock | Noctalia V5 (`config/noctalia/config.toml`) |
+| Terminal | Foot |
 | Shell | Fish + Starship + Tide |
-| Лаунчер | Noctalia launcher (Super+R / Super+A) |
-| Промпт | Starship (`config/starship.toml`) |
-| Система-инфо | Fastfetch (`config/fastfetch`) |
-| Файл-менеджер (TUI) | Yazi |
-| Мониторинг | Btop, Cava |
-| Редактор | Micro |
-| Цвета от обоев | Wallust |
+| Launcher | Noctalia (Super+R / Super+A) |
+| Prompt | Starship (`config/starship.toml`) |
+| System Info | Fastfetch (`config/fastfetch`) |
+| File Manager (TUI) | Yazi |
+| Monitoring | Btop, Cava |
+| Editor | Micro |
+| Wallpaper Colors | Wallust |
 | Spotify | Spicetify (`config/spicetify`) |
 
-Конфиги в `config/` зеркалируют `~/.config` — можно копировать вручную.
+Configs in `config/` mirror `~/.config` — copy manually if needed.
 
-## Установка
+---
 
-> Требуется: Arch/Arch-based, пользователь с sudo, ~5G свободного места.
+## Quick Install
 
 ```bash
 git clone https://github.com/Minish777/hyprland-idk
 cd hyprland-idk
 chmod +x install.sh
-./install.sh           # полный профиль с вопросами
+./install.sh
 ```
 
-### Профили (`-p`)
+The script is **fully interactive** — just run it and follow the menus.
 
-| Профиль | Что включает |
-|---|---|
-| `minimal` | Только Hyprland + bare minimum (foot, fish, starship, fastfetch) |
-| `standard` | Рабочий стол "из коробки" (все основные утилиты) |
-| `full` | Всё + wallust, waybar, rofi, hyprlock, grim/slurp/swappy, direnv |
+---
+
+## What the Installer Does
+
+1. **Detects distro** — verifies Arch/Arch-based (Manjaro, EndeavourOS, Garuda, CachyOS, Artix...)
+2. **Installs AUR helper** — `paru` (if `yay`/`paru` missing)
+3. **Installs packages** — only missing ones for your chosen profile
+4. **Sets up Fish** — `fisher` + `tide@v6`
+5. **Backs up** — existing configs to `~/.config-backup-YYYYMMDD-HHMMSS/`
+6. **Deploys configs** — `config/*` → `~/.config/`, `starship.toml`
+7. **Copies wallpapers** — `wallpapers/*` → `~/wallpapers/`
+8. **Generates colors** — Wallust from wallpapers (dunst, rofi, GTK)
+9. **Post-install** — Bibata cursor, GTK theme, offers to switch shell to fish
+10. **Health check** — verifies everything works
+11. **Shows summary** — hotkeys, useful commands, paths
+
+---
+
+## Installation Profiles
+
+| Profile | Packages | Use Case |
+|---------|----------|----------|
+| **minimal** | `hyprland foot fish starship fastfetch` | Bare bones, you add the rest |
+| **standard** | All core utils + `zen-browser nautilus gnome-text-editor` | Daily driver out of the box |
+| **full** | Everything + `wallust waybar rofi hyprlock grim slurp swappy direnv` | Complete rice experience |
+
+> **Default:** `full` — choose in the interactive menu.
+
+---
+
+## Post-Install Hotkeys
+
+| Key | Action |
+|-----|--------|
+| `Super + A` / `Super + R` | Launcher |
+| `Super + Space` | Terminal (foot) |
+| `Super + E` | File manager (nautilus) |
+| `Super + W` | Browser (zen-browser) |
+| `Super + T` | Wallpaper selector |
+| `Super + V` | Clipboard history (cliphist) |
+| `Super + S` | Control center |
+| `Super + L` | Lock screen |
+| `Super + Shift + R` | Restart Noctalia |
+| `Super + Shift + S` | Screenshot region |
+| `Print` | Full screenshot |
+| `Super + C` | Editor |
+| `Alt + Tab` | Window switcher |
+
+---
+
+## Disk Layout Tip (Small Root Partition)
+
+If your `/` is small (e.g. 32GB), move heavy data to `/home`:
 
 ```bash
-./install.sh -p standard      # стандартный
-./install.sh -p minimal       # минимальный
-./install.sh -p full -f       # полный без подтверждений
+# Pacman cache
+sudo mkdir -p /home/pacman-cache
+# Edit /etc/pacman.conf: CacheDir = /home/pacman-cache/
+
+# Flatpak
+sudo mv /var/lib/flatpak /home/$USER/.local/share/flatpak-system
+sudo ln -s /home/$USER/.local/share/flatpak-system /var/lib/flatpak
+
+# Waydroid
+sudo mv /var/lib/waydroid /home/$USER/.local/share/waydroid-data
+sudo ln -s /home/$USER/.local/share/waydroid-data /var/lib/waydroid
 ```
 
-### Полезные флаги
+---
 
-```bash
-./install.sh -n               # dry-run — покажет что будет, ничего не меняет
-./install.sh --skip-deps      # только конфиги (пакеты уже стоят)
-./install.sh --skip-configs   # только пакеты + обои
-./install.sh --skip-wallpapers # без обоев
-./install.sh --no-backup      # не бэкапить старые конфиги
-```
-
-### Что делает скрипт автоматически:
-
-1. **AUR helper** — ставит `paru` (если нет `yay`/`paru`)
-2. **Зависимости** — устанавливает только недостающие пакеты профиля
-3. **Fish plugins** — `fisher` + `tide@v6`
-4. **Бэкап** — старые конфиги в `~/.config-backup-YYYYMMDD-HHMMSS/`
-5. **Деплой** — копирует `config/*` → `~/.config/`, `starship.toml`
-6. **Обои** — `wallpapers/*` → `~/wallpapers/`
-7. **Wallust** — генерирует цвета из обоев для dunst/rofi/gtk
-8. **Post-install** — курсор Bibata, GTK theme, предложит сменить shell на fish
-9. **Health check** — проверяет что всё на месте
-10. **Саммари** — хоткеи, полезные команды, пути
-
-После установки — выйти из сессии (`_exit` в Hyprland) и зайти заново.
-
-## Горячие клавиши (после установки)
-
-| Клавиша | Действие |
-|---|---|
-| `Super + A` / `Super + R` | Лаунчер / Noctalia лаунчер |
-| `Super + Space` | Терминал (foot) |
-| `Super + E` | Файловый менеджер (nautilus) |
-| `Super + W` | Браузер (zen-browser) |
-| `Super + T` | Селектор обоев |
-| `Super + V` | Буфер обмена (cliphist) |
-| `Super + S` | Центр управления |
-| `Super + L` | Lock |
-| `Super + Shift + R` | Рестарт Noctalia |
-| `Super + Shift + S` | Скриншот области |
-| `Print` | Скриншот экрана |
-| `Super + C` | Редактор (gnome-text-editor) |
-| `Alt + Tab` | Переключение окон |
-
-## /home (отдельный раздел)
-
-Тяжёлые данные живут на большом разделе `/home`, а не на корне:
-
-- Кэш пакетов pacman → `/home/pacman-cache/` (`CacheDir` в `/etc/pacman.conf`)
-- Flatpak → симлинк `/var/lib/flatpak` → `/home/$USER/.local/share/flatpak-system`
-- Waydroid → симлинк `/var/lib/waydroid` → `/home/$USER/.local/share/waydroid-data`
-
-Если у тебя маленький корневой раздел — сделай аналогично.
-
-## Структура репо
+## Repo Structure
 
 ```
 hyprland-idk/
@@ -119,26 +126,179 @@ hyprland-idk/
 │   ├── yazi/
 │   └── starship.toml
 ├── wallpapers/
-├── install.sh           # автоматизированная установка
+├── install.sh           # Interactive installer
 ├── README.md
 └── .gitignore
 ```
 
-## Ручное копирование (без install.sh)
+---
+
+## Manual Install (without install.sh)
 
 ```bash
-# Конфиги
+# Configs
 cp -r config/* ~/.config/
-
-# Starship
 cp config/starship.toml ~/.config/
-
-# Обои
 cp -r wallpapers/* ~/wallpapers/
 
-# Зависимости (Arch)
-paru -S --needed --noconfirm hyprland foot fish starship fastfetch eza zoxide micro yazi bat btop cava lazygit wl-clipboard cliphist gnome-keyring gammastep geoclue mpris-proxy hyprpicker zen-browser nautilus gnome-text-editor pwvucontrol ttf-jetbrains-mono-nerd noto-fonts bibata-cursor-theme papirus-icon-theme spicetify-cli wallust direnv
+# Dependencies (Arch)
+paru -S --needed --noconfirm hyprland foot fish starship fastfetch \
+    eza zoxide micro yazi bat btop cava lazygit wl-clipboard cliphist \
+    gnome-keyring gammastep geoclue mpris-proxy hyprpicker \
+    zen-browser nautilus gnome-text-editor pwvucontrol \
+    ttf-jetbrains-mono-nerd noto-fonts bibata-cursor-theme \
+    papirus-icon-theme spicetify-cli wallust direnv
 
 # Fish plugins
 fish -c 'fisher install jorgebucaran/fisher && fisher install ilancosman/tide@v6'
 ```
+
+---
+
+<details>
+<summary><b>🇷🇺 Русская версия / Russian Version</b></summary>
+
+## Возможности
+
+| Компонент | Конфиг |
+|-----------|--------|
+| Window Manager | Hyprland (Lua: `config/hypr/hyprland.lua`) |
+| Shell / Бар / Док | Noctalia V5 (`config/noctalia/config.toml`) |
+| Терминал | Foot |
+| Shell | Fish + Starship + Tide |
+| Лаунчер | Noctalia (Super+R / Super+A) |
+| Промпт | Starship (`config/starship.toml`) |
+| Системная инфо | Fastfetch (`config/fastfetch`) |
+| Файловый менеджер (TUI) | Yazi |
+| Мониторинг | Btop, Cava |
+| Редактор | Micro |
+| Цвета от обоев | Wallust |
+| Spotify | Spicetify (`config/spicetify`) |
+
+Конфиги в `config/` зеркалят `~/.config`.
+
+## Быстрая установка
+
+```bash
+git clone https://github.com/Minish777/hyprland-idk
+cd hyprland-idk
+chmod +x install.sh
+./install.sh
+```
+
+Скрипт **полностью интерактивен** — просто запусти и следуй меню.
+
+## Что делает установщик
+
+1. **Определяет дистрибутив** — проверяет Arch/Arch-based (Manjaro, EndeavourOS, Garuda, CachyOS, Artix...)
+2. **Ставит AUR helper** — `paru` (если нет `yay`/`paru`)
+3. **Ставит пакеты** — только недостающие для выбранного профиля
+4. **Настраивает Fish** — `fisher` + `tide@v6`
+5. **Бэкапит** — старые конфиги в `~/.config-backup-YYYYMMDD-HHMMSS/`
+6. **Разворачивает конфиги** — `config/*` → `~/.config/`, `starship.toml`
+7. **Копирует обои** — `wallpapers/*` → `~/wallpapers/`
+8. **Генерирует цвета** — Wallust из обоев (dunst, rofi, GTK)
+9. **Post-install** — курсор Bibata, GTK тема, предложит сменить shell на fish
+10. **Health check** — проверяет что всё работает
+11. **Показывает саммари** — хоткеи, полезные команды, пути
+
+## Профили установки
+
+| Профиль | Пакеты | Назначение |
+|---------|--------|------------|
+| **minimal** | `hyprland foot fish starship fastfetch` | Минимум, остальное сам |
+| **standard** | Все базовые утилиты + `zen-browser nautilus gnome-text-editor` | Рабочий стол из коробки |
+| **full** | Всё + `wallust waybar rofi hyprlock grim slurp swappy direnv` | Полный райс |
+
+> **По умолчанию:** `full` — выбирается в меню.
+
+## Горячие клавиши (после установки)
+
+| Клавиша | Действие |
+|---------|----------|
+| `Super + A` / `Super + R` | Лаунчер |
+| `Super + Space` | Терминал (foot) |
+| `Super + E` | Файловый менеджер (nautilus) |
+| `Super + W` | Браузер (zen-browser) |
+| `Super + T` | Селектор обоев |
+| `Super + V` | Буфер обмена (cliphist) |
+| `Super + S` | Центр управления |
+| `Super + L` | Блокировка |
+| `Super + Shift + R` | Рестарт Noctalia |
+| `Super + Shift + S` | Скриншот области |
+| `Print` | Скриншот экрана |
+| `Super + C` | Редактор |
+| `Alt + Tab` | Переключение окон |
+
+## Совет: маленький корневой раздел
+
+Если `/` мало (например 32ГБ), перенеси тяжёлые данные на `/home`:
+
+```bash
+# Кэш pacman
+sudo mkdir -p /home/pacman-cache
+# /etc/pacman.conf: CacheDir = /home/pacman-cache/
+
+# Flatpak
+sudo mv /var/lib/flatpak /home/$USER/.local/share/flatpak-system
+sudo ln -s /home/$USER/.local/share/flatpak-system /var/lib/flatpak
+
+# Waydroid
+sudo mv /var/lib/waydroid /home/$USER/.local/share/waydroid-data
+sudo ln -s /home/$USER/.local/share/waydroid-data /var/lib/waydroid
+```
+
+## Структура репо
+
+```
+hyprland-idk/
+├── config/              # зеркало ~/.config
+│   ├── btop/
+│   ├── cava/
+│   ├── fastfetch/
+│   ├── fish/
+│   ├── foot/
+│   ├── hypr/
+│   ├── micro/
+│   ├── noctalia/
+│   ├── spicetify/
+│   ├── wallust/
+│   ├── yazi/
+│   └── starship.toml
+├── wallpapers/
+├── install.sh           # интерактивный установщик
+├── README.md
+└── .gitignore
+```
+
+## Ручная установка (без install.sh)
+
+```bash
+# Конфиги
+cp -r config/* ~/.config/
+cp config/starship.toml ~/.config/
+cp -r wallpapers/* ~/wallpapers/
+
+# Зависимости (Arch)
+paru -S --needed --noconfirm hyprland foot fish starship fastfetch \
+    eza zoxide micro yazi bat btop cava lazygit wl-clipboard cliphist \
+    gnome-keyring gammastep geoclue mpris-proxy hyprpicker \
+    zen-browser nautilus gnome-text-editor pwvucontrol \
+    ttf-jetbrains-mono-nerd noto-fonts bibata-cursor-theme \
+    papirus-icon-theme spicetify-cli wallust direnv
+
+# Fish plugins
+fish -c 'fisher install jorgebucaran/fisher && fisher install ilancosman/tide@v6'
+```
+
+</details>
+
+---
+
+## License
+
+MIT — use freely.
+
+---
+
+**Made with ❤️ for Arch Linux**

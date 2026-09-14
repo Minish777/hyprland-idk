@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # hyprland-idk installer — Arch/Arch-based
-# Автоматизированная установка с профилями, бэкапами, сухой прогонкой и проверками
+# Интерактивная установка с меню, профилями, бэкапами, health check
 
 set -euo pipefail
 
@@ -13,7 +13,7 @@ BACKUP_DIR="$HOME/.config-backup-$(date +%Y%m%d-%H%M%S)"
 LOG_FILE="/tmp/hyprland-idk-install-$(date +%Y%m%d-%H%M%S).log"
 
 # Цвета
-RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'; CYAN='\033[0;36m'; BLUE='\033[0;34m'; NC='\033[0m'
+RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'; CYAN='\033[0;36m'; BLUE='\033[0;34m'; BOLD='\033[1m'; NC='\033[0m'
 
 # ===== УТИЛИТЫ =====
 log()   { echo -e "${CYAN}[*]${NC} $1" | tee -a "$LOG_FILE"; }
@@ -21,111 +21,187 @@ ok()    { echo -e "${GREEN}[+]${NC} $1" | tee -a "$LOG_FILE"; }
 warn()  { echo -e "${YELLOW}[!]${NC} $1" | tee -a "$LOG_FILE"; }
 err()   { echo -e "${RED}[X]${NC} $1" | tee -a "$LOG_FILE"; exit 1; }
 info()  { echo -e "${BLUE}[i]${NC} $1" | tee -a "$LOG_FILE"; }
-step()  { echo -e "\n${CYAN}▶${NC} $1" | tee -a "$LOG_FILE"; }
+step()  { echo -e "\n${CYAN}▶${NC} ${BOLD}$1${NC}" | tee -a "$LOG_FILE"; }
+prompt() { echo -ne "${YELLOW}[?]${NC} $1 " | tee -a "$LOG_FILE"; }
 
-# Глобальные флаги
-DRY_RUN=false
-FORCE=false
+# Глобальные переменные выбора
 PROFILE="full"
-SKIP_DEPS=false
-SKIP_CONFIGS=false
-SKIP_WALLPAPERS=false
-BACKUP=true
+DO_DEPS=true
+DO_CONFIGS=true
+DO_WALLPAPERS=true
+DO_BACKUP=true
+FORCE=false
+DRY_RUN=false
 
-# ===== ПРОФИЛИ ЗАВИСИМОСТЕЙ =====
+# ===== ПРОФИЛИ =====
 declare -A PROFILE_PKGS=(
     [minimal]="hyprland foot fish starship fastfetch"
     [standard]="hyprland hyprpicker noctalia-git foot fish starship fastfetch eza zoxide micro yazi bat btop cava lazygit wl-clipboard cliphist gnome-keyring gammastep geoclue mpris-proxy hyprpicker zen-browser nautilus gnome-text-editor pwvucontrol ttf-jetbrains-mono-nerd noto-fonts bibata-cursor-theme papirus-icon-theme spicetify-cli"
     [full]="hyprland hyprpicker noctalia-git foot fish starship fastfetch eza zoxide micro yazi bat broot btop cava lazygit wl-clipboard cliphist gnome-keyring gammastep geoclue mpris-proxy hyprpicker zen-browser nautilus gnome-text-editor pwvucontrol ttf-jetbrains-mono-nerd noto-fonts bibata-cursor-theme papirus-icon-theme spicetify-cli wallust direnv zoxide waybar rofi-wayland dunst mako hypridle hyprlock grim slurp swappy cliphist"
 )
 
-# ===== ПОМОЩНИКИ =====
-usage() {
-    cat <<EOF
-Usage: $0 [OPTIONS]
+declare -A PROFILE_DESC=(
+    [minimal]="Минимальный: только Hyprland + bare minimum (foot, fish, starship, fastfetch)"
+    [standard]="Стандартный: рабочий стол \"из коробки\" — все основные утилиты"
+    [full]="Полный: всё + wallust, waybar, rofi, hyprlock, grim/slurp/swappy, direnv"
+)
 
-Автоматизированная установка hyprland-idk rice (Arch/Arch-based)
-
-ОПЦИИ:
-    -p, --profile <name>    Профиль: minimal | standard | full (default: full)
-    -n, --dry-run           Сухой прогон — ничего не меняет, только показывает что будет
-    -f, --force             Перезаписать без подтверждений
-    --skip-deps             Пропустить установку пакетов
-    --skip-configs          Пропустить копирование конфигов
-    --skip-wallpapers       Пропустить копирование обоев
-    --no-backup             Не делать бэкап старых конфигов
-    -h, --help              Показать эту справку
-
-ПРИМЕРЫ:
-    $0                      # Полная установка с подтверждениями
-    $0 -p standard -f       # Стандартный профиль, без вопросов
-    $0 -n                   # Показать что будет сделано
-    $0 --skip-deps          # Только конфиги (пакеты уже стоят)
-
-ПРОФИЛИ:
-    minimal   — только Hyprland + bare minimum
-    standard  — рабочий стол "из коробки"
-    full      — всё + wallust, waybar, rofi, hyprlock, grim/slurp/swappy
-EOF
+# ===== МЕНЮ =====
+header() {
+    clear
+    echo -e "${BOLD}${CYAN}╔══════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${BOLD}${CYAN}║       hyprland-idk installer — Arch/Arch-based           ║${NC}"
+    echo -e "${BOLD}${CYAN}║           Hyprland + Noctalia V5 rice                    ║${NC}"
+    echo -e "${BOLD}${CYAN}╚══════════════════════════════════════════════════════════╝${NC}"
+    echo
 }
 
-parse_args() {
-    while [[ $# -gt 0 ]]; do
-        case $1 in
-            -p|--profile) PROFILE="$2"; shift 2 ;;
-            -n|--dry-run) DRY_RUN=true; shift ;;
-            -f|--force) FORCE=true; shift ;;
-            --skip-deps) SKIP_DEPS=true; shift ;;
-            --skip-configs) SKIP_CONFIGS=true; shift ;;
-            --skip-wallpapers) SKIP_WALLPAPERS=true; shift ;;
-            --no-backup) BACKUP=false; shift ;;
-            -h|--help) usage; exit 0 ;;
-            *) err "Неизвестная опция: $1" ;;
-        esac
+choose_profile() {
+    header
+    echo -e "${BOLD}Выберите профиль установки:${NC}"
+    echo
+    local options=("minimal" "standard" "full")
+    local i=1
+    for opt in "${options[@]}"; do
+        echo -e "  ${CYAN}$i)${NC} ${BOLD}$opt${NC} — ${PROFILE_DESC[$opt]}"
+        ((i++))
     done
-
-    [[ "${PROFILE_PKGS[$PROFILE]+_}" ]] || err "Неизвестный профиль: $PROFILE (minimal|standard|full)"
+    echo
+    prompt "Ваш выбор [1-3] (Enter = full): "
+    read -r choice
+    case ${choice:-3} in
+        1) PROFILE="minimal" ;;
+        2) PROFILE="standard" ;;
+        3) PROFILE="full" ;;
+        *) PROFILE="full" ;;
+    esac
+    ok "Профиль: $PROFILE"
+    sleep 0.3
 }
 
-# Проверка окружения
-check_env() {
-    step "Проверка окружения"
+choose_components() {
+    header
+    echo -e "${BOLD}Что устанавливать?${NC}"
+    echo
 
+    # Пакеты
+    prompt "Установить пакеты? [Y/n]: "
+    read -r ans
+    [[ $ans =~ ^[Nn]$ ]] && DO_DEPS=false
+
+    # Конфиги
+    prompt "Копировать конфиги в ~/.config? [Y/n]: "
+    read -r ans
+    [[ $ans =~ ^[Nn]$ ]] && DO_CONFIGS=false
+
+    # Обои
+    prompt "Копировать обои в ~/wallpapers? [Y/n]: "
+    read -r ans
+    [[ $ans =~ ^[Nn]$ ]] && DO_WALLPAPERS=false
+
+    # Бэкап
+    prompt "Сделать бэкап старых конфигов? [Y/n]: "
+    read -r ans
+    [[ $ans =~ ^[Nn]$ ]] && DO_BACKUP=false
+
+    # Force
+    prompt "Пропускать подтверждения (force mode)? [y/N]: "
+    read -r ans
+    [[ $ans =~ ^[Yy]$ ]] && FORCE=true
+
+    echo
+}
+
+confirm_start() {
+    header
+    echo -e "${BOLD}Итог:${NC}"
+    echo -e "  Профиль:       ${CYAN}$PROFILE${NC}"
+    echo -e "  Пакеты:        $($DO_DEPS && echo -e "${GREEN}да${NC}" || echo -e "${RED}нет${NC}")"
+    echo -e "  Конфиги:       $($DO_CONFIGS && echo -e "${GREEN}да${NC}" || echo -e "${RED}нет${NC}")"
+    echo -e "  Обои:          $($DO_WALLPAPERS && echo -e "${GREEN}да${NC}" || echo -e "${RED}нет${NC}")"
+    echo -e "  Бэкап:         $($DO_BACKUP && echo -e "${GREEN}да${NC}" || echo -e "${RED}нет${NC}")"
+    echo -e "  Force:         $($FORCE && echo -e "${GREEN}да${NC}" || echo -e "${RED}нет${NC}")"
+    echo
+    prompt "Начать установку? [Y/n]: "
+    read -r ans
+    [[ $ans =~ ^[Nn]$ ]] && { info "Отменено пользователем"; exit 0; }
+    echo
+}
+
+# ===== ПРОВЕРКИ =====
+check_distro() {
+    step "Проверка дистрибутива"
+
+    if [[ ! -f /etc/os-release ]]; then
+        err "Не удалось определить дистрибутив (/etc/os-release отсутствует)"
+    fi
+
+    . /etc/os-release
+    local id="${ID:-}" id_like="${ID_LIKE:-}"
+
+    # Прямое совпадение
+    case "$id" in
+        arch|manjaro|endeavouros|garuda|cachyos|archarm|artix)
+            ok "Обнаружен: $PRETTY_NAME"
+            return 0
+            ;;
+    esac
+
+    # Через ID_LIKE
+    case " $id_like " in
+        *" arch "*|*" manjaro "*|*" endeavouros "*|*" garuda "*|*" cachyos "*|*" artix "*|*" archarm "*)
+            ok "Обнаружен Arch-based: $PRETTY_NAME"
+            return 0
+            ;;
+    esac
+
+    # Фоллбек: проверка pacman
+    if command -v pacman >/dev/null 2>&1; then
+        warn "Дистрибутив не в списке, но pacman найден: $PRETTY_NAME"
+        if $FORCE; then
+            ok "Force mode — продолжаем"
+            return 0
+        fi
+        prompt "Продолжить на свой страх и риск? [y/N]: "
+        read -r ans
+        [[ $ans =~ ^[Yy]$ ]] || err "Отменено: не Arch-based дистрибутив"
+        return 0
+    fi
+
+    err "Не Arch-based дистрибутив: $PRETTY_NAME (pacman не найден)"
+}
+
+check_root() {
     [[ $EUID -eq 0 ]] && err "Не запускай от root — скрипту нужен обычный пользователь с sudo."
-
-    if ! grep -qi "arch\|manjaro\|endeavour\|garuda\|cachyos" /etc/os-release 2>/dev/null; then
-        warn "Не Arch-based дистрибутив. Продолжить? (y/N)"
-        $FORCE || read -r ans && [[ $ans =~ ^[Yy]$ ]] || exit 0
-    fi
-
-    if ! command -v pacman >/dev/null 2>&1; then
-        err "pacman не найден"
-    fi
-
-    log "Профиль: $PROFILE"
-    log "Dry-run: $DRY_RUN"
-    log "Force: $FORCE"
-    log "Backup: $BACKUP"
 }
 
-# AUR helper
+check_sudo() {
+    step "Проверка sudo"
+    if ! sudo -n true 2>/dev/null; then
+        log "Требуются права sudo..."
+        sudo -v || err "Sudo не настроен или пароль неверен"
+    fi
+    ok "Sudo OK"
+}
+
+# ===== УСТАНОВКА =====
 ensure_aur_helper() {
     if command -v paru >/dev/null 2>&1 || command -v yay >/dev/null 2>&1; then
         return 0
     fi
 
-    step "AUR helper не найден — ставим paru"
+    step "AUR helper не найден — установка paru"
     $DRY_RUN && { info "DRY: pacman -S base-devel git && makepkg -si paru"; return 0; }
 
     sudo pacman -S --needed --noconfirm base-devel git
     git clone https://aur.archlinux.org/paru.git /tmp/paru-install
     (cd /tmp/paru-install && makepkg -si --noconfirm)
     rm -rf /tmp/paru-install
+    ok "paru установлен"
 }
 
-# Установка пакетов
 install_packages() {
-    $SKIP_DEPS && { info "Пропуск пакетов (--skip-deps)"; return 0; }
+    $DO_DEPS || { info "Пропуск пакетов"; return 0; }
 
     step "Установка пакетов профиля '$PROFILE'"
     local pkgs="${PROFILE_PKGS[$PROFILE]}"
@@ -137,8 +213,7 @@ install_packages() {
 
     ((${#missing[@]} == 0)) && { ok "Все пакеты уже установлены"; return 0; }
 
-    log "К установке: ${missing[*]}"
-    $DRY_RUN && { info "DRY: paru -S --needed --noconfirm ${missing[*]}"; return 0; }
+    log "К установке (${#missing[@]}): ${missing[*]}"
 
     if command -v paru >/dev/null 2>&1; then
         paru -S --needed --noconfirm "${missing[@]}"
@@ -147,44 +222,37 @@ install_packages() {
     else
         sudo pacman -S --needed --noconfirm "${missing[@]}"
     fi
-
     ok "Пакеты установлены"
 }
 
-# Fish plugins
 setup_fish() {
     step "Настройка Fish (fisher + tide)"
-    $DRY_RUN && { info "DRY: fisher install jorgebucaran/fisher && fisher install ilancosman/tide@v6"; return 0; }
+    $DRY_RUN && { info "DRY: fisher install..."; return 0; }
 
-    if ! command -v fish >/dev/null 2>&1; then
-        warn "fish не установлен, пропуск"
-        return 0
-    fi
+    command -v fish >/dev/null 2>&1 || { warn "fish не установлен"; return 0; }
 
     fish -c 'fisher install jorgebucaran/fisher' >/dev/null 2>&1 || true
     fish -c 'fisher install ilancosman/tide@v6' >/dev/null 2>&1 || true
     ok "Fish plugins установлены"
 }
 
-# Бэкап старых конфигов
 backup_configs() {
-    $BACKUP || return 0
+    $DO_BACKUP || return 0
 
     step "Бэкап старых конфигов → $BACKUP_DIR"
-    $DRY_RUN && { info "DRY: mkdir -p $BACKUP_DIR && cp -r ~/.config/* $BACKUP_DIR/ 2>/dev/null"; return 0; }
+    $DRY_RUN && { info "DRY: mkdir -p $BACKUP_DIR && cp -r ~/.config/* $BACKUP_DIR/"; return 0; }
 
     mkdir -p "$BACKUP_DIR"
-    local backed_up=0
+    local count=0
     for d in btop cava fastfetch fish foot hypr micro noctalia spicetify wallust yazi; do
-        [[ -d "$DEST/$d" ]] && { cp -r "$DEST/$d" "$BACKUP_DIR/" 2>/dev/null; ((backed_up++)); }
+        [[ -d "$DEST/$d" ]] && { cp -r "$DEST/$d" "$BACKUP_DIR/" 2>/dev/null; ((count++)); }
     done
-    [[ -f "$DEST/starship.toml" ]] && { cp "$DEST/starship.toml" "$BACKUP_DIR/"; ((backed_up++)); }
-    ((backed_up > 0)) && ok "Забэкаплено: $BACKUP_DIR" || info "Нет конфигов для бэкапа"
+    [[ -f "$DEST/starship.toml" ]] && { cp "$DEST/starship.toml" "$BACKUP_DIR/"; ((count++)); }
+    ((count > 0)) && ok "Забэкаплено $count папок: $BACKUP_DIR" || info "Нет конфигов для бэкапа"
 }
 
-# Развёртывание конфигов
 deploy_configs() {
-    $SKIP_CONFIGS && { info "Пропуск конфигов (--skip-configs)"; return 0; }
+    $DO_CONFIGS || { info "Пропуск конфигов"; return 0; }
 
     step "Копирование конфигов в $DEST"
     $DRY_RUN && { info "DRY: cp -r $CONFIG_DIR/* $DEST/"; return 0; }
@@ -204,9 +272,8 @@ deploy_configs() {
     ok "→ starship.toml"
 }
 
-# Обои + wallust генерация
 deploy_wallpapers() {
-    $SKIP_WALLPAPERS && { info "Пропуск обоев (--skip-wallpapers)"; return 0; }
+    $DO_WALLPAPERS || { info "Пропуск обоев"; return 0; }
 
     step "Копирование обоев в $WALL_DIR"
     $DRY_RUN && { info "DRY: cp -r $REPO_DIR/wallpapers/* $WALL_DIR/"; return 0; }
@@ -217,54 +284,48 @@ deploy_wallpapers() {
     cp -r "$REPO_DIR/wallpapers/." "$WALL_DIR/"
     ok "→ $WALL_DIR"
 
-    # Wallust генерация цветов из обоев
     if command -v wallust >/dev/null 2>&1 && [[ -f "$DEST/wallust/wallust.toml" ]]; then
         log "Генерация цветов wallust..."
         mkdir -p "$DEST/dunst" "$DEST/rofi" 2>/dev/null
-        $DRY_RUN || wallust run "$WALL_DIR"/* 2>/dev/null | head -1 || true
+        wallust run "$WALL_DIR"/* 2>/dev/null | head -1 || true
         ok "Wallust цвета сгенерированы"
     fi
 }
 
-# Post-install: разрешения, сервисы
 post_install() {
     step "Post-install настройка"
 
-    # GTK theme через nwg-look если есть
-    if command -v nwg-look >/dev/null 2>&1; then
-        $DRY_RUN || nwg-look -a >/dev/null 2>&1 || true
-    fi
+    # GTK cursor
+    gsettings set org.gnome.desktop.interface cursor-theme "Bibata-Modern-Classic" 2>/dev/null || true
+    gsettings set org.gnome.desktop.interface cursor-size 24 2>/dev/null || true
 
-    # Обновление bashrc для fish как дефолтного shell
+    # GTK theme via nwg-look
+    command -v nwg-look >/dev/null 2>&1 && nwg-look -a >/dev/null 2>&1 || true
+
+    # Смена shell на fish
     if [[ "$SHELL" != *"fish"* ]]; then
-        log "Текущий shell: $SHELL. Сменить на fish? (y/N)"
-        $FORCE || read -r ans && [[ $ans =~ ^[Yy]$ ]] && chsh -s "$(command -v fish)"
+        log "Текущий shell: $SHELL"
+        if $FORCE || { prompt "Сменить shell на fish? [y/N]: "; read -r ans; [[ $ans =~ ^[Yy]$ ]]; }; then
+            chsh -s "$(command -v fish)" && ok "Shell изменён на fish"
+        fi
     fi
-
-    # GTK cursor fix
-    $DRY_RUN || gsettings set org.gnome.desktop.interface cursor-theme "Bibata-Modern-Classic" 2>/dev/null || true
-    $DRY_RUN || gsettings set org.gnome.desktop.interface cursor-size 24 2>/dev/null || true
 
     ok "Post-install завершён"
 }
 
-# Проверка здоровья
 health_check() {
-    step "Проверка установки (health check)"
+    step "Health check"
 
     local issues=0
 
-    # Проверка ключевых бинарников
     for bin in hyprland foot fish starship fastfetch; do
-        command -v "$bin" >/dev/null 2>&1 || { warn "Отсутствует: $bin"; ((issues++)); }
+        command -v "$bin" >/dev/null 2>&1 || { warn "Отсутствует бинарник: $bin"; ((issues++)); }
     done
 
-    # Проверка конфигов
     for f in hypr/hyprland.lua fish/config.fish fastfetch/config.jsonc starship.toml; do
         [[ -f "$DEST/$f" ]] || { warn "Нет конфига: $f"; ((issues++)); }
     done
 
-    # Проверка обоев
     [[ -d "$WALL_DIR" ]] || { warn "Обои не скопированы"; ((issues++)); }
 
     if ((issues == 0)); then
@@ -274,37 +335,46 @@ health_check() {
     fi
 }
 
-# Саммари
+# ===== САММАРИ =====
 summary() {
-    echo -e "\n${GREEN}========================================${NC}" | tee -a "$LOG_FILE"
-    echo -e "${GREEN}  Установка завершена!${NC}" | tee -a "$LOG_FILE"
-    echo -e "${GREEN}========================================${NC}" | tee -a "$LOG_FILE"
+    echo -e "\n${BOLD}${GREEN}╔══════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${BOLD}${GREEN}║                    УСТАНОВКА ЗАВЕРШЕНА                    ║${NC}"
+    echo -e "${BOLD}${GREEN}╚══════════════════════════════════════════════════════════╝${NC}"
     echo
-    echo -e "  Профиль:      ${CYAN}$PROFILE${NC}" | tee -a "$LOG_FILE"
-    echo -e "  Конфиги:      ${CYAN}$DEST${NC}" | tee -a "$LOG_FILE"
-    echo -e "  Обои:         ${CYAN}$WALL_DIR${NC}" | tee -a "$LOG_FILE"
-    $BACKUP && echo -e "  Бэкап:        ${CYAN}$BACKUP_DIR${NC}" | tee -a "$LOG_FILE"
-    echo -e "  Лог:          ${CYAN}$LOG_FILE${NC}" | tee -a "$LOG_FILE"
+    echo -e "  ${BOLD}Профиль:${NC}      ${CYAN}$PROFILE${NC}"
+    echo -e "  ${BOLD}Конфиги:${NC}      ${CYAN}$DEST${NC}"
+    echo -e "  ${BOLD}Обои:${NC}         ${CYAN}$WALL_DIR${NC}"
+    $DO_BACKUP && echo -e "  ${BOLD}Бэкап:${NC}        ${CYAN}$BACKUP_DIR${NC}"
+    echo -e "  ${BOLD}Лог:${NC}          ${CYAN}$LOG_FILE${NC}"
     echo
-    echo -e "  ${YELLOW}Следующие шаги:${NC}" | tee -a "$LOG_FILE"
-    echo -e "  1. ${CYAN}_exit${NC} в Hyprland (или перезайди в сессию)" | tee -a "$LOG_FILE"
-    echo -e "  2. ${CYAN}Super+R${NC} — лаунчер, ${CYAN}Super+Space${NC} — терминал (foot)" | tee -a "$LOG_FILE"
-    echo -e "  3. ${CYAN}Super+T${NC} — обои, ${CYAN}Super+V${NC} — буфер обмена" | tee -a "$LOG_FILE"
-    echo -e "  4. ${CYAN}Super+Shift+R${NC} — рестарт Noctalia" | tee -a "$LOG_FILE"
+    echo -e "  ${YELLOW}Следующие шаги:${NC}"
+    echo -e "  1. ${CYAN}_exit${NC} в Hyprland (или перезайди в сессию)"
+    echo -e "  2. ${CYAN}Super+R${NC} — лаунчер, ${CYAN}Super+Space${NC} — терминал (foot)"
+    echo -e "  3. ${CYAN}Super+T${NC} — обои, ${CYAN}Super+V${NC} — буфер обмена"
+    echo -e "  4. ${CYAN}Super+Shift+R${NC} — рестарт Noctalia"
     echo
-    echo -e "  ${BLUE}Полезные команды:${NC}" | tee -a "$LOG_FILE"
-    echo -e "  ${CYAN}hyprctl reload${NC} — перезагрузка Hyprland" | tee -a "$LOG_FILE"
-    echo -e "  ${CYAN}noctalia msg settings-toggle${NC} — настройки" | tee -a "$LOG_FILE"
-    echo -e "  ${CYAN}wallust run ~/wallpapers/your.jpg${NC} — сменить тему" | tee -a "$LOG_FILE"
-    echo -e "${GREEN}========================================${NC}" | tee -a "$LOG_FILE"
+    echo -e "  ${BLUE}Полезные команды:${NC}"
+    echo -e "  ${CYAN}hyprctl reload${NC}           — перезагрузка Hyprland"
+    echo -e "  ${CYAN}noctalia msg settings-toggle${NC} — настройки"
+    echo -e "  ${CYAN}wallust run ~/wallpapers/xxx.jpg${NC} — сменить тему"
+    echo
 }
 
 # ===== MAIN =====
 main() {
-    parse_args "$@"
-    check_env
+    header
+    echo -e "${BOLD}Добро пожаловать в установку hyprland-idk!${NC}"
+    echo -e "Этот скрипт настроит Hyprland + Noctalia V5 rice.\n"
+    prompt "Нажми Enter для продолжения..."
+    read -r
 
-    $DRY_RUN && warn "=== DRY RUN MODE — ничего не будет изменено ==="
+    choose_profile
+    choose_components
+    confirm_start
+
+    check_root
+    check_distro
+    check_sudo
 
     ensure_aur_helper
     install_packages
