@@ -58,7 +58,7 @@ create_bind("SUPER + Q",        hl.dsp.window.close())
 create_bind("SUPER + Escape",   hl.dsp.exec_cmd("hyprctl kill"))
 create_bind("SUPER + F",        hl.dsp.window.fullscreen())
 create_bind("SUPER + D",        hl.dsp.window.fullscreen({ mode = 1 }))
-create_bind("SUPER + Space",    hl.dsp.window.float({ action = "toggle" }))
+create_bind("SUPER + Space",    function() hl.dispatch(hl.dsp.window.float({ action = "toggle" })); hl.dispatch(hl.dsp.window.resize({ x = 900, y = 600 })); hl.dispatch(hl.dsp.window.center()) end)
 
 -- Focus (arrows)
 create_bind("SUPER + Left",     hl.dsp.focus({ direction = "left" }))
@@ -103,11 +103,11 @@ create_bind("SUPER + X",       hl.dsp.exec_cmd(ipc .. "panel-toggle session"))
 -- Lock
 create_bind("SUPER + L",       hl.dsp.exec_cmd(ipc .. "session lock"))
 
--- Restart shell
-create_bind("SUPER + SHIFT + R", hl.dsp.exec_cmd("pkill noctalia; sleep 0.3; nohup noctalia --daemon >/dev/null 2>&1 &"), release)
+-- Restart shell (фикс: срабатывает на нажатие, не на отпускание)
+create_bind("SUPER + SHIFT + R", hl.dsp.exec_cmd("pkill noctalia; sleep 0.5; nohup noctalia --daemon >/dev/null 2>&1 &"))
 
--- Random wallpaper
-create_bind("SUPER + T",       hl.dsp.exec_cmd(ipc .. "wallpaper-random"))
+-- Wallpaper selector (Noctalia) — было random, теперь селектор
+create_bind("SUPER + T",       hl.dsp.exec_cmd(ipc .. "panel-toggle wallpaper"))
 
 -- Window switcher
 create_bind("ALT + TAB",       hl.dsp.exec_cmd(ipc .. "window-switcher"))

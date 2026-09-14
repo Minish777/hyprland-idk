@@ -38,7 +38,7 @@ local xwl_popup_tag = "xwl_popup"
 -- Apply default opacity to all windows except fullscreen
 hl.window_rule({ match = { fullscreen = false }, opacity = vars.windowOpacity .. " override" })
 
--- Center all floating windows except xwayland windows (xwayland popups count as windows)
+-- Center all floating windows (size handled by Super+Space bind)
 hl.window_rule({ match = { float = true, xwayland = false }, center = true })
 
 -- Picture in picture (move and resize done via resizer in execs.lua)
@@ -144,6 +144,9 @@ tagged_rule(float_tag, {
     { class = "com-atlauncher-App", title = "ATLauncher Console" },
     { class = "PandoraLauncher",    title = "Minecraft Game Output" },
 })
+
+-- Waydroid
+hl.window_rule({ match = { class = "Waydroid" }, fullscreen = 1 })
 
 
 -------------------------

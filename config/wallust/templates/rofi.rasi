@@ -1,0 +1,68 @@
+/* DWL Rofi Theme — wallust generated */
+
+* {
+    bg:       {{background}};
+    surface:  {{color0}};
+    primary:  {{color4}};
+    on-surf:  {{foreground}};
+    dim:      {{color8}};
+    error:    {{color1}};
+}
+
+window {
+    width:            500px;
+    border:           2px;
+    border-color:     @primary;
+    border-radius:    16px;
+    background-color: @bg;
+    padding:          20px;
+}
+
+mainbox {
+    children: [ inputbar, listview ];
+    spacing:  16px;
+}
+
+inputbar {
+    children: [ prompt, entry ];
+    spacing:  8px;
+    padding:  8px 12px;
+    background-color: @surface;
+    border-radius:    10px;
+}
+
+prompt {
+    background-color: @primary;
+    text-color:       @bg;
+    padding:          6px 12px;
+    border-radius:    8px;
+}
+
+entry {
+    padding: 4px;
+}
+
+listview {
+    lines:   8;
+    columns: 1;
+    spacing: 4px;
+    padding: 4px 0px;
+}
+
+element {
+    padding:       8px 12px;
+    border-radius: 8px;
+}
+
+element selected {
+    background-color: {{color4}}33;
+    text-color:       @primary;
+}
+
+element active {
+    text-color: @primary;
+}
+
+element urgent {
+    text-color: @error;
+}

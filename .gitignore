@@ -1,0 +1,11 @@
+# Caches / runtime
+fish_variables
+*.part
+*.tmp
+
+# Editors
+*~
+*.swp
+
+# Local only
+installer.log

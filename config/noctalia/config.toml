@@ -1,0 +1,427 @@
+# Noctalia v5 — МИНИМАЛИСТИЧНЫЙ ОСТРОВ-БАР (красиво + компактно)
+# Фикс: бар не растянут, виджетов минимум, панели открываются у бара а не в центре
+# Валидация: noctalia config validate
+
+# ── Тема ──
+[theme]
+mode = "dark"
+source = "wallpaper"
+wallpaper_scheme = "m3-rainbow"        # вернул m3-rainbow по просьбе — самая красивая, теперь с динамическим starship
+builtin = "Noctalia"
+pure_black_dark = false
+  [theme.templates]
+  enable_builtin_templates = true
+  enable_community_templates = true
+  builtin_ids = ["btop","cava","foot","gtk3","gtk4","hyprland","kcolorscheme","qt","starship"]
+  community_ids = ["spicetify","pywalfox","zen-browser","discord","zed","prismlauncher","steam","obs","hyprtoolkit","papirus-icons","bat","yazi"]
+
+# ── Обои — fade минимал ──
+[wallpaper]
+enabled = true
+directory = "~/wallpapers"
+fill_mode = "crop"
+transition = ["fade"]             # один fade — по просьбе
+transition_duration = 800
+transition_on_startup = false
+edge_smoothness = 0.30
+per_monitor_directories = false
+  [wallpaper.automation]
+  enabled = false                 # выкл автосмену — по просьбе
+  interval_seconds = 1800
+  order = "random"
+  recursive = true
+
+# Избранные — показываются вверху селектора как минималистичный быстрый выбор
+[[wallpaper.favorite]]
+path = "~/wallpapers/wallhaven-5ymy57.jpg"
+[[wallpaper.favorite]]
+path = "~/wallpapers/wallhaven-8grw1j.jpg"
+[[wallpaper.favorite]]
+path = "~/wallpapers/starlight.jpg"
+[[wallpaper.favorite]]
+path = "~/wallpapers/flutty_wallpapers2.jpg"
+[[wallpaper.favorite]]
+path = "~/wallpapers/neoclassical-medieval-portrait-knight-illustration.jpg"
+
+# ═══════════════════════════════════════════════════
+# БАР — компактный остров по центру (не на всю ширину)
+# ═══════════════════════════════════════════════════
+[bar]
+order = ["default"]
+
+[bar.default]
+enabled = true
+position = "top"
+thickness = 36
+background_opacity = 0.9
+border = "outline"
+border_width = 0.0
+radius = 16
+radius_top_left = 16
+radius_top_right = 16
+radius_bottom_left = 16
+radius_bottom_right = 16
+margin_edge = 10              # парение от края
+margin_ends = 380             # <-- ГЛАВНОЕ: делает бар островом. 380+380 = ~1160 ширина на 1920 мониторе (было 12 = почти во всю ширину)
+margin_opposite_edge = 0
+padding = 12
+widget_spacing = 8
+shadow = true
+contact_shadow = false
+panel_overlap = 1
+concave_edge_corners = false
+hover_highlight = true
+scale = 1.0
+font_scale = 1.0
+font_weight = 500
+show_on_workspace_switch = true
+reserve_space = true          # окна не залазят под бар
+layer = "top"
+
+# Капсулы — менее заметные на тёмном фоне
+capsule = true
+capsule_fill = "surface"          # surface вместо variant — менее контраст на тёмном
+capsule_opacity = 0.62            # 0.92→0.62 — полупрозрачные, не бросаются
+capsule_padding = 6
+capsule_thickness = 0.75
+capsule_radius = 12
+
+# РАСКЛАДКА МИНИМАЛ:
+# слева — лаунчер + воркспейсы (2 виджета)
+# центр — часы (1 виджет, акцент)
+# справа — одна группа системы + контрол-центр (минимум)
+start  = ["workspaces", "media"]
+center = ["clock"]
+end    = ["weather", "tray", "group:status"] # трей после погоды — по просьбе, красиво
+
+# Одна группа — полупрозрачная, не бросается
+[[bar.default.capsule_group]]
+id = "status"
+members = ["network", "volume", "battery"]
+fill = "surface"
+opacity = 0.62
+padding = 6
+radius = 12
+widget_spacing = 8
+
+  [bar.default.dead_zone.actions]
+  left = "none"
+  right = "panel-toggle control-center" # ПКМ в любом месте бара → центр управления
+  middle = "none"
+  scroll_up = "volume-up"
+  scroll_down = "volume-down"
+
+# ── Виджеты (минимализм: 6 видимых + музыка для души) ──
+[widget.workspaces]
+type = "workspaces"
+show_labels = false
+hide_when_empty = false
+labels_only_when_occupied = true
+
+[widget.media]
+type = "media"
+max_length = 240
+min_length = 0
+hide_when_no_media = true      # прячется когда тихо — бар ещё минималистичнее
+hide_album_art = false         # обложка трека — красиво
+title_scroll = "on_hover"
+art_size = 18
+
+[widget.clock]
+type = "clock"
+format = "{:%H:%M}"            # центр-акцент. Для даты: "{:%H:%M • %a %d %b}"
+
+[widget.weather]
+type = "weather"
+show_condition = false
+show_temperature = true
+max_length = 80
+
+[widget.tray]
+type = "tray"
+drawer = true                     # красивый выдвижной ящик
+
+[widget.network]
+type = "network"
+show_label = false                # только иконка Wi-Fi — минималистично
+vpn_status = "hidden"             # без щита VPN — чище
+show_vpn_label = false
+
+[widget.volume]
+type = "volume"
+device = "output"
+
+[widget.battery]
+type = "battery"               # на десктопе просто не покажется
+
+# ── Скрытые (доступ через IPC/клавиши, не занимают место в баре) ──
+# launcher и control-center убраны из бара по просьбе — открывай Super+Space / правый клик по бару
+# bluetooth, brightness, tray и т.д. в control-center
+
+# ═══════════════════════════════════════════════════
+# SHELL — панели открываются у бара, а не в центре
+# ═══════════════════════════════════════════════════
+[shell]
+font_family = "Inter"
+lang = "ru"
+time_format = "{:%H:%M}"
+date_format = "%A, %x"
+corner_radius_scale = 1.15
+button_borders = true
+card_borders = true
+input_borders = true
+popup_borders = true
+popup_shadows = true
+offline_mode = false
+telemetry_enabled = false
+external_ip_enabled = false
+settings_show_advanced = true
+settings_window_translucent = true
+show_location = true
+setup_wizard_enabled = false
+polkit_agent = true
+password_style = "random"
+clipboard_enabled = true
+clipboard_history_max_entries = 150
+clipboard_keep_from_closed_apps = true
+clipboard_confirm_clear_history = true
+clipboard_auto_paste = "auto"
+launch_apps_as_systemd_services = false
+screen_time_enabled = false
+shared_gl_context = true
+disable_mipmaps = false
+
+  [shell.animation]
+  enabled = true
+  speed = 0.85                    # медленнее — видно масштаб из центра, а не рывок из воздуха
+
+  [shell.shadow]
+  direction = "down"
+  alpha = 0.45
+
+  [shell.panel]
+  transparency_mode = "glass"
+  borders = true
+  shadow = true
+  list_item_background = true
+  floating_layer = "overlay"
+  launcher_placement = "floating"     # выезжает снизу — как было
+  launcher_position = "bottom_center"
+  clipboard_placement = "attached"    # прикреплено как трей
+  clipboard_position = "auto"
+  control_center_placement = "attached"
+  control_center_position = "auto"
+  wallpaper_placement = "floating"    # выезжает слева — как было
+  wallpaper_position = "center_left"
+  session_placement = "attached"
+  session_position = "auto"
+  polkit_placement = "floating"
+  polkit_position = "center"
+  floating_offset = 16
+  open_near_click_launcher = false
+  open_near_click_control_center = true
+  open_near_click_clipboard = true
+  open_near_click_session = true
+
+  [shell.launcher]
+  categories = false
+  show_icons = true
+  show_app_origin_indicator = false   # меньше декора — компактнее
+  compact = true
+  app_grid = true                     # сетка — высоту задаёт количество пинов
+  show_app_actions = false
+  sort_by_usage = false               # не подмешивать недавние — покажет ровно пины
+  fetch_exchange_rates = false
+  provider_prefix = "/"
+  auto_paste = "auto"
+  pinned = ["firefox.desktop", "code.desktop", "foot.desktop", "org.gnome.Nautilus.desktop", "spotify.desktop", "discord.desktop", "kitty.desktop", "thunar.desktop"] # 8 пинов = ровно 2 ряда по 4 в гриде снизу
+
+  [shell.screenshot]
+  save_to_file = false            # только в буфер
+  directory = ""
+  filename_pattern = ""
+  copy_to_clipboard = true
+  freeze_screen = true
+  confirm_region = false
+  show_cursor = false
+  remember_last_region = false    # не запоминать область — каждый раз заново, не мешает
+  pipe_to_command = false
+
+  [shell.screen_corners]
+  enabled = true
+  size = 10
+
+[shell.privacy]
+cam_filter_regex = ""
+mic_filter_regex = ""
+screen_filter_regex = ""
+
+# ── Уведомления / OSD ──
+[notification]
+enable_daemon = true
+position = "top_right"
+offset_x = 14
+offset_y = 14
+scale = 1.0
+background_opacity = 0.96
+border = true
+show_actions = true
+show_app_name = true
+max_visible = 4
+collapse_on_dismiss = true
+history_retention_hours = 24
+
+[osd]
+enabled = true
+position = "top_center"
+orientation = "horizontal"
+scale = 1.0
+background_opacity = 0.94
+border = true
+offset_y = 14
+  [osd.kinds]
+  volume = true
+  brightness = true
+  wifi = true
+
+# ── Сервисы ──
+[brightness]
+enable_ddcutil = false
+minimum_brightness = 8
+
+[nightlight]
+enabled = false
+temperature_day = 6500
+temperature_night = 3800
+
+[location]
+auto_locate = true
+
+[weather]
+enabled = true
+unit = "metric"
+refresh_minutes = 30
+effects = false               # выкл эффекты для минимализма
+
+[system.monitor]
+enabled = true
+cpu_poll_seconds = 2.0
+memory_poll_seconds = 2.0
+
+[battery]
+warning_threshold = 15
+
+[audio]
+enable_sounds = false
+sound_volume = 0.45
+
+[control_center]
+width = 480                   # чуть уже — минималистичнее
+hidden_tabs = []
+show_session_button = true
+show_shortcut_labels = true
+sidebar = "compact"
+
+[idle]
+pre_action_fade_seconds = 2.0
+behavior_order = ["lock","screen-off"]
+  [idle.behavior.lock]
+  action = "lock"
+  timeout = 600
+  enabled = false
+  [idle.behavior.screen-off]
+  action = "screen_off"
+  timeout = 800
+  enabled = false
+
+# ═══════════════════════════════════════════════════
+# ЛОКСКРИН — УЛЬТРА КРАСИВО, ХВАСТАТЬСЯ
+# ═══════════════════════════════════════════════════
+[lockscreen]
+enabled = true
+fingerprint = true
+lock_before_suspend = true
+allow_empty_password = false
+blurred_desktop = true            # блюр текущего рабочего стола — премиум эффект
+blur_intensity = 0.62             # сочный блюр
+tint_intensity = 0.32             # затемнение под палитру (не чёрная дыра)
+wallpaper = ""                    # пусто = берёт твои обои HDMI-A-1, с блюром смотрится как стекло
+monitors = []                     # на всех мониках
+
+# ── ЛОК — МИНИМАЛ: только время + пароль, премиум ──
+[lockscreen_widgets]
+enabled = true
+schema_version = 2
+widget_order = ["clock-hero", "lockscreen-login-box@HDMI-A-1"]
+
+  [lockscreen_widgets.grid]
+  cell_size = 16
+  major_interval = 4
+  visible = false
+
+  [lockscreen_widgets.widget.clock-hero]
+  type = "clock"
+  output = "HDMI-A-1"
+  cx = 960.0
+  cy = 360.0                      # золотая середина верхней половины
+  box_width = 680.0
+  box_height = 200.0
+  rotation = 0.0
+  enabled = true
+
+    [lockscreen_widgets.widget.clock-hero.settings]
+    clock_style = "digital"
+    background = true
+    background_color = "surface_variant"
+    background_opacity = 0.62
+    background_radius = 28.0
+    background_padding = 22.0
+    shadow = true
+
+  # ── СТЕКЛЯННЫЙ ЛОГИН-БОКС внизу (как macOS/iOS) ──
+  [lockscreen_widgets.widget."lockscreen-login-box@HDMI-A-1"]
+  type = "login_box"
+  output = "HDMI-A-1"
+  cx = 960.0
+  cy = 750.0                      # центр нижней половины — не падает вниз
+  box_width = 720.0
+  box_height = 200.0
+  rotation = 0.0
+  enabled = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@HDMI-A-1".settings]
+    layout = "regular"
+    background_color = "surface"
+    background_opacity = 0.72     # стекло
+    background_radius = 28.0
+    input_opacity = 0.92
+    input_radius = 18.0
+    center_password_text = false
+    show_caps_lock = true
+    show_keyboard_layout = true
+    show_login_button = true
+    show_media = true             # трек под паролем — очень сочно
+    show_session_buttons = true
+    show_unlock_hint = true
+    show_weather = true           # погода в локскрине — хвастовство
+
+[accessibility]
+ui_scale = 1.0
+high_contrast = false
+
+[dock]
+enabled = false
+
+[plugins]
+enabled = []
+auto_update = "all"
+[[plugins.source]]
+name = "official"
+kind = "git"
+location = "https://github.com/noctalia-dev/official-plugins"
+enabled = true
+[[plugins.source]]
+name = "community"
+kind = "git"
+location = "https://github.com/noctalia-dev/community-plugins"
+enabled = true

@@ -1,0 +1,17 @@
+[wallust]
+# Colors generated from wallpaper
+# See: wallust(1)
+
+[env]
+# Use JSON output for eww integration
+format = "json"
+colors = "~/.cache/wallust/colors.json"
+
+[templates]
+# rofi theme
+rofi.template = 'rofi.rasi'
+rofi.target = '~/.config/rofi/dwl.rasi'
+
+# dunst notifications
+dunst.template = 'dunstrc'
+dunst.target = '~/.config/dunst/dunstrc'

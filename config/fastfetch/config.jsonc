@@ -1,0 +1,31 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+  "logo": {
+    "type": "small",
+    "padding": { "right": 2, "top": 1 }
+  },
+  "display": {
+    "separator": "  ",
+    "key": { "width": 8, "type": "string" },
+    "stat": false
+  },
+  "modules": [
+    "break",
+    { "type": "os", "key": "OS", "format": "{3}" },
+    { "type": "kernel", "key": "KRNL" },
+    { "type": "initsystem", "key": "INIT" },
+    { "type": "wm", "key": "WM" },
+    { "type": "shell", "key": "SH" },
+    { "type": "terminal", "key": "TERM" },
+    { "type": "memory", "key": "MEM", "format": "{1} / {2}" },
+    {
+      "type": "command",
+      "key": "AGE",
+      "text": "bash -c 'd=$(( ($(date +%s) - $(stat -c %W / 2>/dev/null || stat -c %Y /)) / 86400 )); echo \"$d day$([ $d -ne 1 ] && echo s)\"'",
+      "format": "{1}"
+    },
+    "break",
+    { "type": "colors", "symbol": "circle", "key": " " },
+    "break"
+  ]
+}

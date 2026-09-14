@@ -18,37 +18,37 @@ return {
     workspaceSwipeFingers      = 4,
     gestureFingersMore         = 4,
 
-    -- Blur
+    -- Blur — оптимизировано под GTX 1050 + 1080p
     blurEnabled                = true,
     blurPopups                 = true,
     blurInputMethods           = true,
-    blurSize                   = 8,
+    blurSize                   = 6,                -- 8→6 легче для 1050
     blurPasses                 = 2,
     blurXray                   = false,
 
-    -- Shadow
-    shadowEnabled              = true,
-    shadowRange                = 15,
-    shadowRenderPower          = 4,
-    shadowColour               = "rgba(" .. scheme.inversePrimary .. "10)",
+    -- Shadow — выкл свечение у активных
+    shadowEnabled              = false,             -- выкл по просьбе — без свечения
+    shadowRange                = 12,
+    shadowRenderPower          = 3,
+    shadowColour               = "rgba(" .. scheme.inversePrimary .. "14)",
 
-    -- Gaps
-    workspaceGaps              = 12,
-    windowGapsIn               = 5,
+    -- Gaps — остров как у бара Noctalia, но компактнее для 1920
+    workspaceGaps              = 10,               -- 12→10
+    windowGapsIn               = 4,                -- 5→4
     windowGapsOut              = 6,
-    singleWindowGapsOut        = 12,
+    singleWindowGapsOut        = 8,                -- 12→8 не жрёт место когда одно окно
 
-    -- Window styling
-    windowOpacity              = 0.95,
-    windowRounding             = 15,
-    windowBorderSize           = 1,
-    activeWindowBorderColour   = "rgba(" .. scheme.primary .. "e6)",
-    inactiveWindowBorderColour = "rgba(" .. scheme.onSurfaceVariant .. "11)",
+    -- Window styling — без прозрачности и без обводки активных
+    windowOpacity              = 1.0,              -- 0.98→1.0 убрана прозрачность окон
+    windowRounding             = 12,
+    windowBorderSize           = 0,                -- убрана обводка у активных (и всех) — по просьбе
+    activeWindowBorderColour   = "rgba(00000000)",
+    inactiveWindowBorderColour = "rgba(00000000)",
 
     -- Misc
-    volumeStep                 = 10,
+    volumeStep                 = 5,                -- 10→5 точнее
     volumeMax                  = 100,
-    cursorTheme                = "sweet-cursors",
+    cursorTheme                = "Bibata-Modern-Classic", -- поставил bibata по просьбе
     cursorSize                 = 24,
     sleepGestureCmd            = "systemctl suspend-then-hibernate",
 
