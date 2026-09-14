@@ -2,7 +2,8 @@
 
 > **Hyprland + Noctalia V5 rice** for Arch/Arch-based distros
 
-![Preview](https://github.com/user-attachments/assets/ef1c5cf6-e124-4012-b367-ed41ceec3b89)
+<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/12730cf4-83c3-414f-a610-ce2ca561b62e" />
+
 
 ---
 
