@@ -13,15 +13,16 @@
 |-----------|--------|
 | Window Manager | Hyprland (Lua: `config/hypr/hyprland.lua`) |
 | Shell / Bar / Dock | Noctalia V5 (`config/noctalia/config.toml`) |
-| Terminal | Foot |
+| Terminal | Foot (`Super + A`) |
 | Shell | Fish + Starship + Tide |
-| Launcher | Noctalia (Super+R / Super+A) |
+| Launcher | Noctalia (`Super + R`) |
+| Keybind Cheatsheet | Noctalia plugin — `Super + /` |
 | Prompt | Starship (`config/starship.toml`) |
 | System Info | Fastfetch (`config/fastfetch`) |
 | File Manager (TUI) | Yazi |
 | Monitoring | Btop, Cava |
 | Editor | Micro |
-| Wallpaper Colors | Wallust |
+| Wallpaper Colors | Wallust (optional, config included) |
 | Spotify | Spicetify (`config/spicetify`) |
 
 Configs in `config/` mirror `~/.config` — copy manually if needed.
@@ -37,7 +38,7 @@ chmod +x install.sh
 ./install.sh
 ```
 
-The script is **fully interactive** — just run it and follow the menus.
+The script is **interactive**: it asks only for the optional steps (install `asar`?, switch shell to fish?), backs up existing configs and logs everything to `/tmp/`.
 
 ---
 
@@ -45,32 +46,54 @@ The script is **fully interactive** — just run it and follow the menus.
 
 1. **Detects distro** — verifies Arch/Arch-based (Manjaro, EndeavourOS, Garuda, CachyOS, Artix...)
 2. **Installs AUR helper** — `paru` (if `yay`/`paru` missing)
-3. **Installs packages** — only missing ones for your chosen profile
-4. **Optionally installs `asar`** — asked when you pick yes (needed for Electron apps / Discord forks; Arch repo, fallback npm)
+3. **Installs packages** — only missing ones (single full profile, no menus)
+4. **Optionally installs `asar`** — asked with `[y/N]` (needed for Electron apps / Discord forks; Arch repo, then AUR, then npm fallbacks)
 5. **Sets up Fish** — `fisher` + `tide@v6`
 6. **Backs up** — existing configs to `~/.config-backup-YYYYMMDD-HHMMSS/`
 7. **Deploys configs** — `config/*` → `~/.config/`, `starship.toml`
 8. **Copies wallpapers** — `wallpapers/*` → `~/wallpapers/`
-9. **Generates colors** — Wallust from wallpapers (dunst, rofi, GTK)
-10. **Post-install** — Bibata cursor, GTK theme, offers to switch shell to fish
+9. **Generates colors** — Wallust from wallpapers, if installed (dunst, rofi)
+10. **Post-install** — Bibata cursor, GTK theme, offers to switch shell to fish (`[y/N]`)
 11. **Health check** — verifies everything works
 12. **Shows summary** — hotkeys, useful commands, paths
 
 ---
 
-## Installation Profiles
+## What Gets Installed
 
-| Profile | Packages | Use Case |
-|---------|----------|----------|
-| **minimal** | `hyprland foot fish starship fastfetch` | Bare bones, you add the rest |
-| **standard** | All core utils + `zen-browser nautilus gnome-text-editor` | Daily driver out of the box |
-| **full** | Everything + `wallust waybar rofi hyprlock grim slurp swappy direnv` | Complete rice experience |
+Single **full** profile — everything you need, no menu required:
 
-> **Default:** `full` — choose in the interactive menu.
+- **Core:** `hyprland`, `hyprpicker`, `noctalia-git`, `foot`, `fish`, `starship`, `fastfetch`
+- **CLI tools:** `eza`, `zoxide`, `micro`, `yazi`, `bat`, `broot`, `btop`, `cava`, `lazygit`
+- **Clipboard / keys:** `wl-clipboard`, `cliphist`, `gnome-keyring`
+- **Night light:** `gammastep`, `geoclue`, `mpris-proxy`
+- **Apps:** `zen-browser`, `nautilus`, `gnome-text-editor`, `pwvucontrol`
+- **Look:** `ttf-jetbrains-mono-nerd`, `noto-fonts`, `bibata-cursor-theme`, `papirus-icon-theme`
+- **Extras:** `spicetify-cli`, `direnv`
+
+> Noctalia covers bar, launcher, notifications, wallpapers, lockscreen and control-center — so `wallust`, `waybar`, `rofi` are not required.
 
 ---
 
 ## Post-Install Hotkeys
+
+*(matches `config/hypr/hyprland/keybinds.lua`; press `Super + /` to open the in-session cheatsheet)*
+
+**Windows**
+
+| Key | Action |
+|-----|--------|
+| `Super + Q` | Close window |
+| `Super + Escape` | Kill window |
+| `Super + F` | Toggle fullscreen |
+| `Super + D` | Maximize window |
+| `Super + Space` | Toggle floating (900×600, centered) |
+| `Super + ←/→/↑/↓` | Focus window in that direction |
+| `Super + Shift + ←/→/↑/↓` | Move window in that direction |
+| `Super + drag` | Drag window |
+| `Super + right-click-drag` | Resize window |
+
+**Apps**
 
 | Key | Action |
 |-----|--------|
@@ -78,22 +101,57 @@ The script is **fully interactive** — just run it and follow the menus.
 | `Super + E` | File manager (nautilus) |
 | `Super + R` | Launcher (Noctalia) |
 | `Super + W` | Browser (zen-browser) |
-| `Super + T` | Wallpaper selector |
-| `Super + Space` | Toggle float + resize (900×600) + center |
+| `Super + C` | Editor (gnome-text-editor) |
+
+**System**
+
+| Key | Action |
+|-----|--------|
 | `Super + S` | Control center |
+| `Super + ,` | System settings |
 | `Super + Shift + S` | Screenshot region |
+| `Print` | Full screenshot |
+| `Super + Shift + Alt + S` | Screenshot region (alt) |
 | `Super + V` | Clipboard history (cliphist) |
+| `Super + Shift + Alt + V` | Clear clipboard |
+| `Ctrl + Shift + Alt + V` | Paste latest clipboard entry |
+| `Super + X` | Session menu |
 | `Super + L` | Lock screen |
 | `Super + Shift + R` | Restart Noctalia |
-| `Print` | Full screenshot |
-| `Super + C` | Editor (gnome-text-editor) |
+| `Super + T` | Wallpaper selector |
 | `Alt + Tab` | Window switcher |
-| `Super + mouse ↑/↓` | Prev/Next workspace |
-| `Super + PgUp/PgDn` | Prev/Next workspace |
-| `Ctrl + Super + ←/→` | Prev/Next workspace |
-| `Super + Alt + mouse ↑/↓` | Move window to prev/next workspace |
-| `Ctrl + Super + Shift + ←/→` | Move window to prev/next workspace |
-| `Super + Shift + ←/→/↑/↓` | Move window direction |
+| `Super + /` | **Keybind cheatsheet** |
+| `Super + Shift + C` | Color picker (hyprpicker) |
+
+**Workspaces**
+
+| Key | Action |
+|-----|--------|
+| `Super + 1..0` | Switch to workspace 1–10 |
+| `Super + Shift + 1..0` | Move window to workspace 1–10 |
+| `Super + mouse wheel` | Previous / next workspace |
+
+**Media & Volume**
+
+| Key | Action |
+|-----|--------|
+| `Ctrl + Super + Space` | Play / pause (also `XF86AudioPlay`) |
+| `Ctrl + Super + =` | Next track (`XF86AudioNext`) |
+| `Ctrl + Super + -` | Previous track (`XF86AudioPrev`) |
+| `Ctrl + Super + Backspace` | Stop media |
+| `Super + Shift + M` | Mute volume (also `XF86AudioMute`) |
+| `XF86AudioMicMute` | Mute mic |
+| `XF86AudioRaiseVolume` | Volume up |
+| `XF86AudioLowerVolume` | Volume down |
+| `Ctrl + Alt + V` | Audio settings (pwvucontrol) |
+
+**Brightness & Power**
+
+| Key | Action |
+|-----|--------|
+| `XF86MonBrightnessUp` | Brightness up |
+| `XF86MonBrightnessDown` | Brightness down |
+| `Super + Shift + L` | Sleep |
 
 ---
 
@@ -151,12 +209,15 @@ cp config/starship.toml ~/.config/
 cp -r wallpapers/* ~/wallpapers/
 
 # Dependencies (Arch)
-paru -S --needed --noconfirm hyprland foot fish starship fastfetch \
+paru -S --needed --noconfirm hyprland hyprpicker noctalia-git \
+    foot fish starship fastfetch \
     eza zoxide micro yazi bat btop cava lazygit wl-clipboard cliphist \
-    gnome-keyring gammastep geoclue mpris-proxy hyprpicker \
+    gnome-keyring gammastep geoclue mpris-proxy \
     zen-browser nautilus gnome-text-editor pwvucontrol \
     ttf-jetbrains-mono-nerd noto-fonts bibata-cursor-theme \
-    papirus-icon-theme spicetify-cli wallust direnv
+    papirus-icon-theme spicetify-cli direnv
+# optional: color generation from wallpapers
+paru -S --needed --noconfirm wallust
 
 # Fish plugins
 fish -c 'fisher install jorgebucaran/fisher && fisher install ilancosman/tide@v6'
@@ -173,15 +234,16 @@ fish -c 'fisher install jorgebucaran/fisher && fisher install ilancosman/tide@v6
 |-----------|--------|
 | Window Manager | Hyprland (Lua: `config/hypr/hyprland.lua`) |
 | Shell / Бар / Док | Noctalia V5 (`config/noctalia/config.toml`) |
-| Терминал | Foot |
+| Терминал | Foot (`Super + A`) |
 | Shell | Fish + Starship + Tide |
-| Лаунчер | Noctalia (Super+R / Super+A) |
+| Лаунчер | Noctalia (`Super + R`) |
+| Чит-лист биндов | Плагин Noctalia — `Super + /` |
 | Промпт | Starship (`config/starship.toml`) |
 | Системная инфо | Fastfetch (`config/fastfetch`) |
 | Файловый менеджер (TUI) | Yazi |
 | Мониторинг | Btop, Cava |
 | Редактор | Micro |
-| Цвета от обоев | Wallust |
+| Цвета от обоев | Wallust (опционально, конфиг в комплекте) |
 | Spotify | Spicetify (`config/spicetify`) |
 
 Конфиги в `config/` зеркалят `~/.config`.
@@ -195,34 +257,56 @@ chmod +x install.sh
 ./install.sh
 ```
 
-Скрипт **полностью интерактивен** — просто запусти и следуй меню.
+Скрипт **интерактивен**: спрашивает только про опциональные шаги (установить `asar`?, сменить shell на fish?), делает бэкап конфигов и пишет логи в `/tmp/`.
 
 ## Что делает установщик
 
 1. **Определяет дистрибутив** — проверяет Arch/Arch-based (Manjaro, EndeavourOS, Garuda, CachyOS, Artix...)
 2. **Ставит AUR helper** — `paru` (если нет `yay`/`paru`)
-3. **Ставит пакеты** — только недостающие для выбранного профиля
-4. **Опционально ставит `asar`** — спросит (нужен для Electron-приложений и Discord-форков; из репозитория Arch, фолбэк npm)
+3. **Ставит пакеты** — только недостающие (единый full-профиль, без меню)
+4. **Опционально ставит `asar`** — спросит `[y/N]` (нужен для Electron-приложений и Discord-форков; репозиторий Arch, потом AUR, потом npm-фолбэки)
 5. **Настраивает Fish** — `fisher` + `tide@v6`
 6. **Бэкапит** — старые конфиги в `~/.config-backup-YYYYMMDD-HHMMSS/`
 7. **Разворачивает конфиги** — `config/*` → `~/.config/`, `starship.toml`
 8. **Копирует обои** — `wallpapers/*` → `~/wallpapers/`
-9. **Генерирует цвета** — Wallust из обоев (dunst, rofi, GTK)
-10. **Post-install** — курсор Bibata, GTK тема, предложит сменить shell на fish
+9. **Генерирует цвета** — Wallust из обоев, если установлен (dunst, rofi)
+10. **Post-install** — курсор Bibata, GTK тема, предложит сменить shell на fish (`[y/N]`)
 11. **Health check** — проверяет что всё работает
 12. **Показывает саммари** — хоткеи, полезные команды, пути
 
-## Профили установки
+## Что ставится
 
-| Профиль | Пакеты | Назначение |
-|---------|--------|------------|
-| **minimal** | `hyprland foot fish starship fastfetch` | Минимум, остальное сам |
-| **standard** | Все базовые утилиты + `zen-browser nautilus gnome-text-editor` | Рабочий стол из коробки |
-| **full** | Всё + `wallust waybar rofi hyprlock grim slurp swappy direnv` | Полный райс |
+Единый **full**-профиль — всё нужное из коробки, без меню:
 
-> **По умолчанию:** `full` — выбирается в меню.
+- **Ядро:** `hyprland`, `hyprpicker`, `noctalia-git`, `foot`, `fish`, `starship`, `fastfetch`
+- **CLI-утилиты:** `eza`, `zoxide`, `micro`, `yazi`, `bat`, `broot`, `btop`, `cava`, `lazygit`
+- **Буфер обмена / ключи:** `wl-clipboard`, `cliphist`, `gnome-keyring`
+- **Ночной свет:** `gammastep`, `geoclue`, `mpris-proxy`
+- **Приложения:** `zen-browser`, `nautilus`, `gnome-text-editor`, `pwvucontrol`
+- **Оформление:** `ttf-jetbrains-mono-nerd`, `noto-fonts`, `bibata-cursor-theme`, `papirus-icon-theme`
+- **Дополнительно:** `spicetify-cli`, `direnv`
+
+> Noctalia покрывает бар, лаунчер, уведомления, обои, локскрин и центр управления — поэтому `wallust`, `waybar`, `rofi` не нужны.
 
 ## Горячие клавиши (после установки)
+
+*(совпадают с `config/hypr/hyprland/keybinds.lua`; `Super + /` — чит-лист всех биндов прямо в сессии)*
+
+**Окна**
+
+| Клавиша | Действие |
+|---------|----------|
+| `Super + Q` | Закрыть окно |
+| `Super + Escape` | Убить окно |
+| `Super + F` | Полноэкранный режим |
+| `Super + D` | Развернуть окно |
+| `Super + Space` | Float-режим (900×600, по центру) |
+| `Super + ←/→/↑/↓` | Фокус на окно в сторону |
+| `Super + Shift + ←/→/↑/↓` | Переместить окно в сторону |
+| `Super + перетаскивание` | Перетаскивание окна |
+| `Super + ПКМ-перетаскивание` | Изменение размера окна |
+
+**Приложения**
 
 | Клавиша | Действие |
 |---------|----------|
@@ -230,22 +314,57 @@ chmod +x install.sh
 | `Super + E` | Файловый менеджер (nautilus) |
 | `Super + R` | Лаунчер (Noctalia) |
 | `Super + W` | Браузер (zen-browser) |
-| `Super + T` | Селектор обоев |
-| `Super + Space` | Toggle float + resize (900×600) + center |
+| `Super + C` | Редактор (gnome-text-editor) |
+
+**Система**
+
+| Клавиша | Действие |
+|---------|----------|
 | `Super + S` | Центр управления |
+| `Super + ,` | Настройки системы |
 | `Super + Shift + S` | Скриншот области |
+| `Print` | Скриншот экрана |
+| `Super + Shift + Alt + S` | Скриншот области (альтернатива) |
 | `Super + V` | Буфер обмена (cliphist) |
+| `Super + Shift + Alt + V` | Очистить буфер |
+| `Ctrl + Shift + Alt + V` | Вставить последний элемент буфера |
+| `Super + X` | Меню сессии |
 | `Super + L` | Блокировка |
 | `Super + Shift + R` | Рестарт Noctalia |
-| `Print` | Скриншот экрана |
-| `Super + C` | Редактор (gnome-text-editor) |
+| `Super + T` | Селектор обоев |
 | `Alt + Tab` | Переключение окон |
-| `Super + mouse ↑/↓` | Предидущий/следующий workspace |
-| `Super + PgUp/PgDn` | Предидущий/следующий workspace |
-| `Ctrl + Super + ←/→` | Предидущий/следующий workspace |
-| `Super + Alt + mouse ↑/↓` | Переместить окно на prev/next workspace |
-| `Ctrl + Super + Shift + ←/→` | Переместить окно на prev/next workspace |
-| `Super + Shift + ←/→/↑/↓` | Переместить окно по направлению |
+| `Super + /` | **Чит-лист клавиш** |
+| `Super + Shift + C` | Пипетка цвета (hyprpicker) |
+
+**Workspace**
+
+| Клавиша | Действие |
+|---------|----------|
+| `Super + 1..0` | Перейти на workspace 1–10 |
+| `Super + Shift + 1..0` | Переместить окно на workspace 1–10 |
+| `Super + колесо мыши` | Предыдущий / следующий workspace |
+
+**Медиа и громкость**
+
+| Клавиша | Действие |
+|---------|----------|
+| `Ctrl + Super + Space` | Играть / пауза (также `XF86AudioPlay`) |
+| `Ctrl + Super + =` | Следующий трек (`XF86AudioNext`) |
+| `Ctrl + Super + -` | Предыдущий трек (`XF86AudioPrev`) |
+| `Ctrl + Super + Backspace` | Стоп медиа |
+| `Super + Shift + M` | Без звука (также `XF86AudioMute`) |
+| `XF86AudioMicMute` | Выключить микрофон |
+| `XF86AudioRaiseVolume` | Громче |
+| `XF86AudioLowerVolume` | Тише |
+| `Ctrl + Alt + V` | Настройки аудио (pwvucontrol) |
+
+**Яркость и питание**
+
+| Клавиша | Действие |
+|---------|----------|
+| `XF86MonBrightnessUp` | Яркость вверх |
+| `XF86MonBrightnessDown` | Яркость вниз |
+| `Super + Shift + L` | Сон |
 
 ## Совет: маленький корневой раздел
 
@@ -297,12 +416,15 @@ cp config/starship.toml ~/.config/
 cp -r wallpapers/* ~/wallpapers/
 
 # Зависимости (Arch)
-paru -S --needed --noconfirm hyprland foot fish starship fastfetch \
+paru -S --needed --noconfirm hyprland hyprpicker noctalia-git \
+    foot fish starship fastfetch \
     eza zoxide micro yazi bat btop cava lazygit wl-clipboard cliphist \
-    gnome-keyring gammastep geoclue mpris-proxy hyprpicker \
+    gnome-keyring gammastep geoclue mpris-proxy \
     zen-browser nautilus gnome-text-editor pwvucontrol \
     ttf-jetbrains-mono-nerd noto-fonts bibata-cursor-theme \
-    papirus-icon-theme spicetify-cli wallust direnv
+    papirus-icon-theme spicetify-cli direnv
+# опционально: генерация цветов из обоев
+paru -S --needed --noconfirm wallust
 
 # Fish plugins
 fish -c 'fisher install jorgebucaran/fisher && fisher install ilancosman/tide@v6'
