@@ -126,7 +126,7 @@ return {
     kbLock                     = "SUPER + L",
     kbRestoreLock              = "SUPER + ALT + L",
     kbSleep                    = "SUPER + SHIFT + L",
-    kbCheatsheet               = "SUPER + /",
+    kbCheatsheet               = "SUPER + SLASH",
 
     -- Clipboard
     kbClipboard                = "SUPER + V",
