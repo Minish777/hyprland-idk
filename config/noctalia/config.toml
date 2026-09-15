@@ -413,7 +413,7 @@ high_contrast = false
 enabled = false
 
 [plugins]
-enabled = []
+enabled = ["kenn/keybind-cheatsheet"]
 auto_update = "all"
 [[plugins.source]]
 name = "official"

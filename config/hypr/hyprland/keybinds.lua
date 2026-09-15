@@ -113,7 +113,7 @@ create_bind("SUPER + T",       hl.dsp.exec_cmd(ipc .. "panel-toggle wallpaper"))
 create_bind("ALT + TAB",       hl.dsp.exec_cmd(ipc .. "window-switcher"))
 
 -- Cheatsheet (Noctalia community plugin)
-create_bind(vars.kbCheatsheet,  hl.dsp.exec_cmd(ipc .. "cheatsheet"))
+create_bind(vars.kbCheatsheet,  hl.dsp.exec_cmd(ipc .. "panel-toggle kenn/keybind-cheatsheet:cheatsheet"))
 
 ---------------------------
 --------- WORKSPACES ------
