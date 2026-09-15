@@ -63,7 +63,7 @@ The script is **interactive**: it asks only for the optional steps (install `asa
 
 Single **full** profile — everything you need, no menu required:
 
-- **Core:** `hyprland`, `hyprpicker`, `noctalia-git`, `foot`, `fish`, `starship`, `fastfetch`
+- **Core:** `hyprland`, `hyprpicker`, `noctalia` (или `noctalia` из AUR), `foot`, `fish`, `starship`, `fastfetch`
 - **CLI tools:** `eza`, `zoxide`, `micro`, `yazi`, `bat`, `broot`, `btop`, `cava`, `lazygit`
 - **Clipboard / keys:** `wl-clipboard`, `cliphist`, `gnome-keyring`
 - **Night light:** `gammastep`, `geoclue`, `mpris-proxy`
@@ -208,7 +208,7 @@ cp config/starship.toml ~/.config/
 cp -r wallpapers/* ~/wallpapers/
 
 # Dependencies (Arch)
-paru -S --needed --noconfirm hyprland hyprpicker noctalia-git \
+paru -S --needed --noconfirm hyprland hyprpicker noctalia \
     foot fish starship fastfetch \
     eza zoxide micro yazi bat btop cava lazygit wl-clipboard cliphist \
     gnome-keyring gammastep geoclue mpris-proxy \
@@ -277,7 +277,7 @@ chmod +x install.sh
 
 Единый **full**-профиль — всё нужное из коробки, без меню:
 
-- **Ядро:** `hyprland`, `hyprpicker`, `noctalia-git`, `foot`, `fish`, `starship`, `fastfetch`
+- **Ядро:** `hyprland`, `hyprpicker`, `noctalia`, `foot`, `fish`, `starship`, `fastfetch`
 - **CLI-утилиты:** `eza`, `zoxide`, `micro`, `yazi`, `bat`, `broot`, `btop`, `cava`, `lazygit`
 - **Буфер обмена / ключи:** `wl-clipboard`, `cliphist`, `gnome-keyring`
 - **Ночной свет:** `gammastep`, `geoclue`, `mpris-proxy`
@@ -414,7 +414,7 @@ cp config/starship.toml ~/.config/
 cp -r wallpapers/* ~/wallpapers/
 
 # Зависимости (Arch)
-paru -S --needed --noconfirm hyprland hyprpicker noctalia-git \
+paru -S --needed --noconfirm hyprland hyprpicker noctalia \
     foot fish starship fastfetch \
     eza zoxide micro yazi bat btop cava lazygit wl-clipboard cliphist \
     gnome-keyring gammastep geoclue mpris-proxy \

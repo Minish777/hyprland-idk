@@ -36,7 +36,7 @@ trap 'die "Error on line $LINENO in function ${FUNCNAME[1]:-main}. Check the log
 # Noctalia covers: bar, launcher, notifications, wallpapers, lockscreen, control-center
 # wallust/waybar/rofi are redundant
 FULL_PKGS=(
-    hyprland hyprpicker noctalia-git
+    hyprland hyprpicker noctalia
     foot fish starship fastfetch
     eza zoxide micro yazi bat broot btop cava lazygit
     wl-clipboard cliphist gnome-keyring
@@ -94,11 +94,25 @@ ensure_aur_helper() {
     ok "paru installed"
 }
 
+# noctalia поставляется в двух вариантах: официальный пакет (noctalia, в репо)
+# и AUR (noctalia-git). Любой из них покрывает зависимость — повторно не качаем.
+pkg_installed() {
+    local pkg="$1"
+    pacman -Q "$pkg" >/dev/null 2>&1 && return 0
+    if [[ "$pkg" == "noctalia" ]] && pacman -Q noctalia-git >/dev/null 2>&1; then
+        return 0
+    fi
+    if [[ "$pkg" == "noctalia-git" ]] && pacman -Q noctalia >/dev/null 2>&1; then
+        return 0
+    fi
+    return 1
+}
+
 install_packages() {
     step "Installing packages"
     local missing=()
     for pkg in "${FULL_PKGS[@]}"; do
-        pacman -Q "$pkg" >/dev/null 2>&1 || missing+=("$pkg")
+        pkg_installed "$pkg" || missing+=("$pkg")
     done
 
     ((${#missing[@]} == 0)) && { ok "All packages already installed"; return 0; }
