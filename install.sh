@@ -115,6 +115,19 @@ install_packages() {
         pkg_installed "$pkg" || missing+=("$pkg")
     done
 
+    # noctalia в списке выступает каноническим именем; реальный пакет под систему
+    # выбираем по факту наличия в репо:
+    #   • официальный noctalia есть только в репах CachyOS;
+    #   • на обычном Arch/Manjaro/Endeavour его там нет — берём noctalia-git (AUR).
+    local i variant
+    for i in "${!missing[@]}"; do
+        if [[ "${missing[i]}" == "noctalia" ]]; then
+            variant="noctalia-git"
+            pacman -Si noctalia >/dev/null 2>&1 && variant="noctalia"
+            missing[i]="$variant"
+        fi
+    done
+
     ((${#missing[@]} == 0)) && { ok "All packages already installed"; return 0; }
 
     log "Installing (${#missing[@]}): ${missing[*]}"
