@@ -113,9 +113,42 @@ install_packages() {
 }
 
 # ===== ОПЦИОНАЛЬНО: asar (для Electron-приложений и Discord-форков) =====
+# Пробуем несколько способов, пока один не сработает
+try_asar_method() {
+    case "$1" in
+        pacman)
+            sudo pacman -S --needed --noconfirm asar
+            ;;
+        aur)
+            if command -v paru >/dev/null 2>&1; then
+                paru -S --noconfirm asar
+            elif command -v yay >/dev/null 2>&1; then
+                yay -S --noconfirm asar
+            else
+                return 1
+            fi
+            ;;
+        npm_scoped)
+            sudo npm install -g @electron/asar
+            ;;
+        npm_plain)
+            sudo npm install -g asar
+            ;;
+        npm_user)
+            npm install -g --prefix "$HOME/.local" @electron/asar asar || return 1
+            [[ -x "$HOME/.local/bin/asar" ]] || return 1
+            sudo ln -sf "$HOME/.local/bin/asar" /usr/local/bin/asar
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+    command -v asar >/dev/null 2>&1
+}
+
 install_asar() {
     step "ASAR — утилита для Electron (Discord-форки и т.п.)"
-    command -v asar >/dev/null 2>&1 && { ok "asar уже установлен"; return 0; }
+    command -v asar >/dev/null 2>&1 && { ok "asar уже установлен: $(command -v asar)"; return 0; }
 
     info "asar нужен для распаковки/сборки Electron-приложений: Vesktop, Discord-форки и др."
     prompt "Установить asar? [y/N]: "
@@ -124,19 +157,18 @@ install_asar() {
         return 0
     fi
 
-    if sudo pacman -S --needed --noconfirm asar; then
-        ok "asar установлен (pacman)"
-        return 0
-    fi
-
-    warn "Пакета asar нет в репозиториях — пробуем npm"
-    if command -v npm >/dev/null 2>&1; then
-        if sudo npm install -g asar; then
-            ok "asar установлен (npm)"
+    local methods=(pacman aur npm_scoped npm_plain npm_user)
+    local tried=()
+    for m in "${methods[@]}"; do
+        log "Пробуем способ: $m"
+        if try_asar_method "$m"; then
+            ok "asar установлен ($m): $(command -v asar)"
             return 0
         fi
-    fi
-    err "asar не получилось установить: нет пакета в репах и нет npm"
+        tried+=("$m")
+    done
+
+    err "asar не установился. Пробовал: ${tried[*]} (см. лог: $ERROR_LOG)"
 }
 
 setup_fish() {
