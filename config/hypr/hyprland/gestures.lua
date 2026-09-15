@@ -12,10 +12,3 @@ hl.config({
 })
 
 hl.gesture({ fingers = vars.workspaceSwipeFingers, direction = "horizontal", action = "workspace" })
-hl.gesture({
-    fingers   = vars.gestureFingersMore,
-    direction = "down",
-    action    = function()
-        hl.exec_cmd(vars.sleepGestureCmd)
-    end,
-})

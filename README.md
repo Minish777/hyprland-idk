@@ -145,13 +145,12 @@ Single **full** profile — everything you need, no menu required:
 | `XF86AudioLowerVolume` | Volume down |
 | `Ctrl + Alt + V` | Audio settings (pwvucontrol) |
 
-**Brightness & Power**
+**Brightness**
 
 | Key | Action |
 |-----|--------|
 | `XF86MonBrightnessUp` | Brightness up |
 | `XF86MonBrightnessDown` | Brightness down |
-| `Super + Shift + L` | Sleep |
 
 ---
 
@@ -358,13 +357,12 @@ chmod +x install.sh
 | `XF86AudioLowerVolume` | Тише |
 | `Ctrl + Alt + V` | Настройки аудио (pwvucontrol) |
 
-**Яркость и питание**
+**Яркость**
 
 | Клавиша | Действие |
 |---------|----------|
 | `XF86MonBrightnessUp` | Яркость вверх |
 | `XF86MonBrightnessDown` | Яркость вниз |
-| `Super + Shift + L` | Сон |
 
 ## Совет: маленький корневой раздел
 

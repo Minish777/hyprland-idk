@@ -120,6 +120,3 @@ create_bind("XF86AudioMicMute", hl.dsp.exec_cmd(ipc .. "mic-mute"), { locked = t
 create_bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(ipc .. "volume-up"), { locked = true, repeating = true, desc = "Volume up" })
 create_bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(ipc .. "volume-down"), { locked = true, repeating = true, desc = "Volume down" })
 create_bind(vars.kbAudioSettings, hl.dsp.exec_cmd(vars.audioSettings), { desc = "Audio settings" })
-
--- 8. Sleep
-create_bind(vars.kbSleep, hl.dsp.exec_cmd(vars.sleepGestureCmd), { locked = true, desc = "Sleep" })

@@ -16,7 +16,6 @@ return {
     touchpadDisableTyping      = true,
     touchpadScrollFactor       = 0.3,
     workspaceSwipeFingers      = 4,
-    gestureFingersMore         = 4,
 
     -- Blur — оптимизировано под GTX 1050 + 1080p
     blurEnabled                = true,
@@ -50,7 +49,6 @@ return {
     volumeMax                  = 100,
     cursorTheme                = "Bibata-Modern-Classic", -- поставил bibata по просьбе
     cursorSize                 = 24,
-    sleepGestureCmd            = "systemctl suspend-then-hibernate",
 
     ------------------
     ---- KEYBINDS ----
@@ -125,7 +123,6 @@ return {
     kbShowPanels               = "SUPER + K",
     kbLock                     = "SUPER + L",
     kbRestoreLock              = "SUPER + ALT + L",
-    kbSleep                    = "SUPER + SHIFT + L",
     kbCheatsheet               = "SUPER + code:61",
 
     -- Clipboard
