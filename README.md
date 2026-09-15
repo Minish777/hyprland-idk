@@ -46,14 +46,15 @@ The script is **fully interactive** — just run it and follow the menus.
 1. **Detects distro** — verifies Arch/Arch-based (Manjaro, EndeavourOS, Garuda, CachyOS, Artix...)
 2. **Installs AUR helper** — `paru` (if `yay`/`paru` missing)
 3. **Installs packages** — only missing ones for your chosen profile
-4. **Sets up Fish** — `fisher` + `tide@v6`
-5. **Backs up** — existing configs to `~/.config-backup-YYYYMMDD-HHMMSS/`
-6. **Deploys configs** — `config/*` → `~/.config/`, `starship.toml`
-7. **Copies wallpapers** — `wallpapers/*` → `~/wallpapers/`
-8. **Generates colors** — Wallust from wallpapers (dunst, rofi, GTK)
-9. **Post-install** — Bibata cursor, GTK theme, offers to switch shell to fish
-10. **Health check** — verifies everything works
-11. **Shows summary** — hotkeys, useful commands, paths
+4. **Optionally installs `asar`** — asked when you pick yes (needed for Electron apps / Discord forks; Arch repo, fallback npm)
+5. **Sets up Fish** — `fisher` + `tide@v6`
+6. **Backs up** — existing configs to `~/.config-backup-YYYYMMDD-HHMMSS/`
+7. **Deploys configs** — `config/*` → `~/.config/`, `starship.toml`
+8. **Copies wallpapers** — `wallpapers/*` → `~/wallpapers/`
+9. **Generates colors** — Wallust from wallpapers (dunst, rofi, GTK)
+10. **Post-install** — Bibata cursor, GTK theme, offers to switch shell to fish
+11. **Health check** — verifies everything works
+12. **Shows summary** — hotkeys, useful commands, paths
 
 ---
 
@@ -201,14 +202,15 @@ chmod +x install.sh
 1. **Определяет дистрибутив** — проверяет Arch/Arch-based (Manjaro, EndeavourOS, Garuda, CachyOS, Artix...)
 2. **Ставит AUR helper** — `paru` (если нет `yay`/`paru`)
 3. **Ставит пакеты** — только недостающие для выбранного профиля
-4. **Настраивает Fish** — `fisher` + `tide@v6`
-5. **Бэкапит** — старые конфиги в `~/.config-backup-YYYYMMDD-HHMMSS/`
-6. **Разворачивает конфиги** — `config/*` → `~/.config/`, `starship.toml`
-7. **Копирует обои** — `wallpapers/*` → `~/wallpapers/`
-8. **Генерирует цвета** — Wallust из обоев (dunst, rofi, GTK)
-9. **Post-install** — курсор Bibata, GTK тема, предложит сменить shell на fish
-10. **Health check** — проверяет что всё работает
-11. **Показывает саммари** — хоткеи, полезные команды, пути
+4. **Опционально ставит `asar`** — спросит (нужен для Electron-приложений и Discord-форков; из репозитория Arch, фолбэк npm)
+5. **Настраивает Fish** — `fisher` + `tide@v6`
+6. **Бэкапит** — старые конфиги в `~/.config-backup-YYYYMMDD-HHMMSS/`
+7. **Разворачивает конфиги** — `config/*` → `~/.config/`, `starship.toml`
+8. **Копирует обои** — `wallpapers/*` → `~/wallpapers/`
+9. **Генерирует цвета** — Wallust из обоев (dunst, rofi, GTK)
+10. **Post-install** — курсор Bibata, GTK тема, предложит сменить shell на fish
+11. **Health check** — проверяет что всё работает
+12. **Показывает саммари** — хоткеи, полезные команды, пути
 
 ## Профили установки
 

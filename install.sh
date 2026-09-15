@@ -112,6 +112,33 @@ install_packages() {
     ok "Пакеты установлены"
 }
 
+# ===== ОПЦИОНАЛЬНО: asar (для Electron-приложений и Discord-форков) =====
+install_asar() {
+    step "ASAR — утилита для Electron (Discord-форки и т.п.)"
+    command -v asar >/dev/null 2>&1 && { ok "asar уже установлен"; return 0; }
+
+    info "asar нужен для распаковки/сборки Electron-приложений: Vesktop, Discord-форки и др."
+    prompt "Установить asar? [y/N]: "
+    if [[ ! $ans =~ ^[Yy]$ ]]; then
+        info "Пропускаем asar"
+        return 0
+    fi
+
+    if sudo pacman -S --needed --noconfirm asar; then
+        ok "asar установлен (pacman)"
+        return 0
+    fi
+
+    warn "Пакета asar нет в репозиториях — пробуем npm"
+    if command -v npm >/dev/null 2>&1; then
+        if sudo npm install -g asar; then
+            ok "asar установлен (npm)"
+            return 0
+        fi
+    fi
+    err "asar не получилось установить: нет пакета в репах и нет npm"
+}
+
 setup_fish() {
     step "Настройка Fish (fisher + tide@v6)"
     command -v fish >/dev/null 2>&1 || { warn "fish не установлен"; return 0; }
@@ -230,6 +257,7 @@ main() {
 
     ensure_aur_helper
     install_packages
+    install_asar
     setup_fish
     backup_configs
     deploy_configs
